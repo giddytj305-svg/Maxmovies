@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About | MaxMovies</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+  :root {
+    --bg-color: #141414;
+    --bg-secondary: #1f1f1f;
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --accent: #e50914;
+    --accent-hover: #f40612;
+    --nav-height: 70px;
+    --padding-sides: 4%;
+  }
+  
+  * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+  body { 
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+    background-color: var(--bg-color); 
+    color: var(--text-primary); 
+    padding-top: var(--nav-height); 
+    overflow-x: hidden; 
+  }
+
+  /* --- Navigation (Matching Main App) --- */
+  .navbar { position: fixed; top: 0; width: 100%; height: var(--nav-height); background: rgba(20, 20, 20, 0.95); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--padding-sides); z-index: 100; border-bottom: 1px solid #222; }
+  .nav-left { display: flex; align-items: center; gap: 20px; }
+  .logo { color: var(--accent); font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; cursor: pointer; text-decoration: none; }
+  .nav-links { display: flex; list-style: none; gap: 20px; }
+  .nav-links a { cursor: pointer; color: #ddd; font-weight: 500; transition: color 0.2s; text-decoration: none; }
+  .nav-links a:hover { color: white; }
+
+  /* Hamburger Styles */
+  .hamburger { display:flex; align-items:center; gap:12px; } 
+  .hamburger-btn { display:none; background:transparent; border:none; color:#ddd; cursor:pointer; font-size:28px; padding: 0; transition: color 0.2s; } 
+  .hamburger-btn:active, .hamburger-btn.active { color: var(--accent); } 
+  
+  .hamburger-menu { 
+      position: absolute; top:70px; right:4%; background: #0f0f10; border:1px solid #222; 
+      padding:12px; border-radius:8px; display:none; flex-direction:column; gap:8px; 
+      z-index:110; box-shadow: 0 5px 20px rgba(0,0,0,0.5); 
+  } 
+  .hamburger-menu.active { display: flex; }
+  .hamburger-menu a { color:#ddd; text-decoration:none; padding:10px 15px; border-radius:6px; display:flex; align-items:center; gap:10px; transition: all 0.2s; } 
+  .hamburger-menu a:hover { background: rgba(229, 9, 20, 0.1); color: var(--accent); }
+
+  /* --- About Content Styles --- */
+  .about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px var(--padding-sides);
+    animation: fadeIn 0.6s ease;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  .about-hero {
+    text-align: center;
+    margin-bottom: 60px;
+    position: relative;
+  }
+
+  .about-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, #fff, #999);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .about-hero p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .accent-text { color: var(--accent); font-weight: bold; }
+
+  /* Feature Grid */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 80px;
+  }
+
+  .feature-card {
+    background: linear-gradient(145deg, #1f1f1f, #141414);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+  }
+
+  .feature-icon {
+    font-size: 3rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: inline-block;
+  }
+
+  .feature-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    color: white;
+  }
+
+  .feature-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  /* Developer Section */
+  .dev-section {
+    background: rgba(255,255,255,0.03);
+    border-radius: 16px;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    border: 1px solid rgba(255,255,255,0.05);
+    margin-bottom: 60px;
+  }
+
+  .dev-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--accent);
+    font-size: 3rem;
+    color: var(--text-primary);
+    flex-shrink: 0;
+  }
+
+  .dev-content h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .dev-content p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--accent);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn:hover { background-color: var(--accent-hover); }
+
+  /* Footer Nav (Mobile) */
+  .footer-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 64px; background: rgba(10,10,10,0.98); display: none; justify-content: space-around; align-items: center; border-top: 1px solid #222; z-index: 200; } 
+  .foot-btn { background: transparent; border: none; color: #ddd; display:flex; flex-direction: column; align-items: center; gap:4px; font-size: 0.85rem; padding: 6px 10px; cursor: pointer; text-decoration: none; } 
+  .foot-btn i { font-size: 20px; } 
+  .foot-btn span { font-size: 12px; }
+  .foot-btn:active, .foot-btn:focus { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger-btn { display: block; }
+    .footer-nav { display: flex; }
+    .about-hero h1 { font-size: 2.5rem; }
+    .dev-section { flex-direction: column; text-align: center; padding: 30px 20px; }
+    .nav-left { gap: 15px; }
+    .logo { font-size: 1.4rem; }
+    .navbar { padding: 0 15px; }
+  }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="logo">MaxMovies</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#library">My Library</a></li>
+      </ul>
+    </div>
+    <div class="hamburger">
+      <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMenu()"><i class="material-icons">menu</i></button>
+      <div class="hamburger-menu" id="hamburgerMenu">
+        <a href="index.html"><i class="material-icons">home</i> Home</a>
+        <a href="index.html#library"><i class="material-icons">library_books</i> Library</a>
+        <a href="ai.html"><i class="material-icons">smart_toy</i> Ask AI</a>
+        <a href="portfolio.html"><i class="material-icons">work</i> My Portfolio</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="about-container">
+    
+    <!-- Hero -->
+    <header class="about-hero">
+      <h1>Entertainment Reimagined</h1>
+      <p>
+        Experience the future of streaming with <span class="accent-text">MaxMovies</span>. 
+        Where speed meets quality, and entertainment knows no boundaries.
+      </p>
+    </header>
+
+    <!-- Features Grid -->
+    <section class="features-grid">
+      <!-- AI Feature -->
+      <div class="feature-card">
+        <i class="material-icons feature-icon">smart_toy</i>
+        <h3>Integrated AI</h3>
+        <p>Powered by advanced Artificial Intelligence to understand your taste and deliver personalized content effortlessly.</p>
+      </div>
+
+      <!-- Speed Feature -->
+      <div class="feature-card">
+        <i class="material-icons feature-icon">bolt</i>
+        <h3>Lightning Fast</h3>
+        <p>Engineered for speed. Enjoy instant playback with zero buffering, ensuring your movie night is never interrupted.</p>
+      </div>
+
+      <!-- Library Feature -->
+      <div class="feature-card">
+        <i class="material-icons feature-icon">movie_filter</i>
+        <h3>Massive Collection</h3>
+        <p>Access thousands of Hollywood movies, trending series, and hidden gems. If it exists, it's likely here.</p>
+      </div>
+
+      <!-- Quality Feature -->
+      <div class="feature-card">
+        <i class="material-icons feature-icon">hd</i>
+        <h3>Premium Quality</h3>
+        <p>Stream in crystal clear HD. All content is available completely for free, with no hidden costs or subscriptions.</p>
+      </div>
+    </section>
+
+    <!-- Developer Section -->
+    <section class="dev-section">
+      <div class="dev-avatar">
+        <span>M</span>
+      </div>
+      <div class="dev-content">
+        <h2>Meet the Developer</h2>
+        <p>
+          MaxMovies is a passion project crafted by <strong>Max</strong>. 
+          Driven by a desire to make entertainment accessible and reliable, Max has built a platform that combines cutting-edge technology with user-centric design.
+          <br><br>
+          "I believe everyone deserves a premium viewing experience without barriers. Enjoy the show!"
+        </p>
+        <a href="portfolio.html" class="btn">
+          <i class="material-icons">work</i> View Portfolio
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- FOOTER NAV (Mobile) -->
+  <nav class="footer-nav">
+    <a href="index.html" class="foot-btn"><i class="material-icons">home</i><span>Home</span></a>
+    <a href="index.html#library" class="foot-btn"><i class="material-icons">library_books</i><span>Library</span></a>
+    <a href="index.html#downloads" class="foot-btn"><i class="material-icons">download_for_offline</i><span>Downloads</span></a>
+    <a href="index.html" class="foot-btn"><i class="material-icons">search</i><span>Search</span></a>
+  </nav>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('hamburgerMenu');
+      const btn = document.getElementById('hamburgerBtn');
+      
+      if (menu.style.display === 'flex') {
+        menu.style.display = 'none';
+        btn.classList.remove('active');
+      } else {
+        menu.style.display = 'flex';
+        btn.classList.add('active');
+      }
+    }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('hamburgerMenu');
+      const btn = document.getElementById('hamburgerBtn');
+      if (menu.style.display === 'flex' && !menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.style.display = 'none';
+        btn.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
