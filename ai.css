@@ -1,0 +1,370 @@
+:root {
+  --bg: #0d1117;
+  --panel: #161b22;
+  --border: #30363d;
+  /* 🎬 CHANGED: Accent color from Blue to MaxMovies Red */
+  --accent: #E50914; 
+  --text: #c9d1d9;
+  --user: #238636;
+  --code-bg: #0c0c0c;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ✅ Global Font Fix — Adds emoji support everywhere */
+body, button, input, .message {
+  font-family: "Inter", "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", "Noto Emoji", sans-serif;
+}
+
+body.light {
+  --bg: #f6f8fa;
+  --panel: #ffffff;
+  --border: #d0d7de;
+  /* 🎬 CHANGED: Accent color from Blue to MaxMovies Red (Darker for light theme contrast) */
+  --accent: #C40510; 
+  --text: #24292f;
+  --user: #218bff;
+  --code-bg: #f0f0f0;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+  padding-top: env(safe-area-inset-top, 8px);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* --- HEADER --- */
+header {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  color: var(--accent);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  font-weight: 600;
+  font-size: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+header h1 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+#theme-toggle,
+#clear-chat {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: all 0.2s ease;
+}
+
+#theme-toggle:hover,
+#clear-chat:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* --- CHAT --- */
+main {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scroll-behavior: smooth;
+  margin-top: env(safe-area-inset-top, 6px);
+  margin-bottom: env(safe-area-inset-bottom, 6px);
+}
+
+main::-webkit-scrollbar {
+  width: 8px;
+}
+main::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+/* --- MESSAGE BUBBLES --- */
+.message {
+  max-width: 85%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  font-size: 14px;
+  animation: fadeIn 0.3s ease-in-out;
+  box-shadow: var(--shadow);
+}
+
+.message.user {
+  background: var(--user);
+  color: #fff;
+  align-self: flex-end;
+}
+
+.message.ai {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  align-self: flex-start;
+}
+
+/* --- CODE BLOCK --- */
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-top: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--panel);
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--accent);
+  font-family: "Fira Code", monospace;
+}
+
+.copy-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+/* --- FOOTER --- */
+footer {
+  display: flex;
+  align-items: center;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  padding: 6px 8px;
+  box-shadow: var(--shadow);
+  gap: 6px;
+  padding-bottom: calc(6px + env(safe-area-inset-bottom, 8px));
+}
+
+textarea {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+  font-family: "Fira Code", monospace;
+  outline: none;
+  resize: none;
+  height: 42px;
+  transition: border 0.2s ease;
+}
+
+textarea:focus {
+  border-color: var(--accent);
+}
+
+button {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  padding: 0 12px;
+  font-size: 13px;
+  height: 42px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+  transform: scale(1.04);
+}
+
+/* --- TEXT STYLES --- */
+strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Inline code */
+.inline-code {
+  /* 🎬 CHANGED: Shadow color to MaxMovies Red */
+  background: rgba(229, 9, 20, 0.1); 
+  color: var(--accent);
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-family: "Fira Code", monospace;
+  font-size: 13px;
+  text-shadow: 0 0 6px var(--accent);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.inline-code:hover {
+  /* 🎬 CHANGED: Hover background color to MaxMovies Red */
+  background: rgba(229, 9, 20, 0.2); 
+  transform: scale(1.05);
+}
+
+/* Links */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  text-shadow: 0 0 6px var(--accent), 0 0 10px var(--accent);
+  transition: color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease;
+}
+
+a:hover {
+  color: #ffffff;
+  text-shadow: 0 0 12px var(--accent), 0 0 20px var(--accent);
+  transform: scale(1.03);
+}
+
+/* --- GLOWING LISTS --- */
+ul, ol {
+  margin: 8px 0 8px 20px;
+  padding: 0;
+  list-style-position: outside;
+  animation: fadeInList 0.5s ease-in-out;
+}
+
+ul li, ol li {
+  margin: 4px 0;
+  position: relative;
+  line-height: 1.6;
+  animation: fadeInList 0.6s ease both;
+}
+
+ul li::marker, ol li::marker {
+  color: var(--accent);
+  text-shadow: 0 0 6px var(--accent), 0 0 10px var(--accent);
+}
+
+@keyframes fadeInList {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- THINKING ANIMATION --- */
+.thinking {
+  color: var(--accent);
+  text-shadow: 0 0 6px var(--accent), 0 0 12px var(--accent);
+  animation: brainGlow 1.2s ease-in-out infinite alternate;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@keyframes brainGlow {
+  from { text-shadow: 0 0 4px var(--accent); transform: scale(1); }
+  to { text-shadow: 0 0 12px var(--accent); transform: scale(1.05); }
+}
+
+.thinking .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.5;
+  animation: dotPulse 1.2s infinite;
+}
+
+.thinking .dot:nth-child(2) { animation-delay: 0.2s; }
+.thinking .dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% { transform: scale(0.8); opacity: 0.3; }
+  40% { transform: scale(1.2); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Mobile keyboard handling --- */
+@supports (height: 100dvh) {
+  body {
+    height: 100dvh;
+  }
+}
+
+footer {
+  position: sticky;
+  bottom: 0;
+}
+
+footer,
+main {
+  transition: all 0.2s ease-out;
+}
+
+/* 💫 EMOJI ANIMATION STYLES 💫 */
+.message.ai strong,
+.message.ai em,
+.message.ai a,
+.message.ai code {
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes bounceEmoji {
+  0% { transform: translateY(0); }
+  25% { transform: translateY(-4px); }
+  50% { transform: translateY(0); }
+  75% { transform: translateY(3px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes pulseEmoji {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.25); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.message.ai .emoji-bounce {
+  display: inline-block;
+  animation: bounceEmoji 1.2s ease infinite;
+}
+
+.message.ai .emoji-pulse {
+  display: inline-block;
+  animation: pulseEmoji 1.5s ease-in-out infinite;
+}
+
+.fade-in-inline {
+  animation: fadeIn 0.5s ease;
+}
