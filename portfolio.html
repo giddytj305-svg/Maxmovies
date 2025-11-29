@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Uses a placeholder icon, replace with your own if needed -->
+    <!-- Using FontAwesome for the Telegram Logo -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" href="https://img.icons8.com/bubbles/100/000000/code.png" type="image/x-icon">
     <title>Gideon Cheruiyot | Full Stack Developer</title>
     
@@ -13,6 +14,14 @@
            CSS STYLES
            ========================================= */
         @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+        :root {
+            --primary: crimson;
+            --dark-bg: #1f1e1e;
+            --card-bg: #29323c;
+            --text-light: #ffffff;
+            --telegram-color: #0088cc;
+        }
 
         * {
             margin: 0;
@@ -28,6 +37,7 @@
 
         body {
             background-color: #f7f7f7;
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
 
         a {
@@ -46,13 +56,12 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* Smooth corners for all images */
             border-radius: 15px; 
         }
 
         p {
             color: black;
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             margin-top: 5px;
             line-height: 2.5rem;
             font-weight: 300;
@@ -63,35 +72,67 @@
             font-size: 4rem;
             font-family: 300;
             color: black;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 0.2rem;
             text-align: center;
         }
 
         .section-title span {
-            color: crimson;
+            color: var(--primary);
         }
 
+        /* Modern CTA Button */
         .cta {
             display: inline-block;
-            padding: 10px 30px;
+            padding: 12px 35px;
             background-color: transparent;
-            border: 2px solid crimson;
-            font-size: 2rem;
+            border: 2px solid var(--primary);
+            font-size: 1.8rem;
             text-transform: uppercase;
             letter-spacing: 0.1rem;
             margin-top: 30px;
-            transition: 0.3s ease background-color, color;
-            color: white;
-            border-radius: 30px; /* Smooth button corners */
+            transition: 0.4s ease;
+            color: var(--primary);
+            border-radius: 50px;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            font-weight: 600;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background-color: var(--primary);
+            transition: 0.4s ease;
+            z-index: -1;
+        }
+
+        .cta:hover::before {
+            width: 100%;
         }
 
         .cta:hover {
             color: white;
-            background-color: crimson;
-            box-shadow: 0 0 15px crimson;
+            box-shadow: 0 0 20px rgba(220, 20, 60, 0.6);
+        }
+
+        /* Animation Classes (Scroll Reveal) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Header / Navbar */
@@ -103,7 +144,7 @@
         }
 
         .brand h1 span {
-            color: crimson;
+            color: var(--primary);
             font-size: 35px;
             font-family: serif;
         }
@@ -120,8 +161,9 @@
         #header .header {
             min-height: 8vh;
             transition: 0.3s ease background-color;
-            background: rgba(41, 50, 60, 0.8); /* Slight dark tint initially */
-            backdrop-filter: blur(10px);
+            background: rgba(41, 50, 60, 0.2); 
+            backdrop-filter: blur(15px); /* Modern Glass Effect */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         #header .nav-bar {
@@ -148,21 +190,6 @@
             z-index: 100;
             cursor: pointer;
             transform: scale(0.8);
-        }
-
-        #header .hamburger:after {
-            content: "";
-            border: 3px solid white;
-            height: 100%;
-            width: 100%;
-            border-radius: 50%;
-            position: absolute;
-            animation: hamburger-puls 1s ease infinite;
-        }
-
-        @keyframes hamburger-puls {
-            0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(1.4); }
         }
 
         #header .hamburger .bar {
@@ -220,7 +247,7 @@
             transition: 0.3s ease color;
         }
 
-        #header .nav-list ul a:hover { color: crimson; }
+        #header .nav-list ul a:hover { color: var(--primary); }
 
         @media screen and (min-width: 1200px) {
             #header .hamburger { display: none; }
@@ -237,23 +264,32 @@
 
         /* Hero Section */
         #hero {
-            background-image: url(https://files.catbox.moe/5k1506.jpg);
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(https://files.catbox.moe/5k1506.jpg);
             background-size: cover;
-            background-position: top center;
+            background-position: center;
             position: relative;
             z-index: 1;
+            overflow: hidden;
         }
 
-        #hero::after {
-            content: "";
+        /* Animated Gradient Overlay */
+        #hero::before {
+            content: '';
             position: absolute;
-            left: 0;
             top: 0;
-            height: 100%;
+            left: 0;
             width: 100%;
-            background-color: black;
-            opacity: 0.7;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(220, 20, 60, 0.2), rgba(0, 0, 0, 0.5));
             z-index: -1;
+            animation: gradientMove 10s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         #hero .hero {
@@ -273,27 +309,27 @@
             animation-delay: 1s;
         }
 
-        #hero h1:nth-child(1) { animation-delay: 1s; }
-        #hero h1:nth-child(2) { animation-delay: 2s; }
-        #hero h1:nth-child(3) { animation: text-reveal-name 0.5s ease 1.5s forwards; animation-delay: 3s; }
+        #hero h1:nth-child(1) { animation-delay: 0.5s; }
+        #hero h1:nth-child(2) { animation-delay: 1.5s; }
+        #hero h1:nth-child(3) { animation: text-reveal-name 0.5s ease 2s forwards; animation-delay: 2.5s; }
 
         #hero h1 span {
-            background-color: crimson;
+            background-color: var(--primary);
             height: 100%;
             width: 0;
             position: absolute;
             top: 0;
             left: 0;
             animation: text-reveal-box 1s ease;
-            animation-delay: 0.5s;
+            animation-delay: 0s;
         }
 
-        #hero h1:nth-child(1) span { animation-delay: 0.5s; }
-        #hero h1:nth-child(2) span { animation-delay: 1.5s; }
-        #hero h1:nth-child(3) span { animation-delay: 2.5s; }
+        #hero h1:nth-child(1) span { animation-delay: 0s; }
+        #hero h1:nth-child(2) span { animation-delay: 1s; }
+        #hero h1:nth-child(3) span { animation-delay: 2s; }
 
         @keyframes text-reveal { 100% { color: white; } }
-        @keyframes text-reveal-name { 100% { color: crimson; font-weight: 500; } }
+        @keyframes text-reveal-name { 100% { color: var(--primary); font-weight: 500; } }
         @keyframes text-reveal-box { 50% { width: 100%; left: 0; } 100% { width: 0; left: 100%; } }
 
         @media only screen and (min-width: 768px) {
@@ -316,11 +352,6 @@
             margin: 0 auto;
         }
         
-        #services .service-top p {
-            font-size: 1.6rem;
-            color: #333;
-        }
-
         #services .service-bottom {
             display: flex;
             align-items: center;
@@ -336,19 +367,20 @@
             justify-content: center;
             flex-direction: column;
             padding: 30px;
-            border-radius: 15px; /* Smooth corners */
-            margin: 10px 5%;
+            border-radius: 20px;
+            margin: 15px 5%;
             position: relative;
             z-index: 1;
             overflow: hidden;
             background: #29323c;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             transition: 0.4s ease all;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         #services .service-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
         #services .service-item h2 {
@@ -359,48 +391,18 @@
         }
 
         #services .service-item p {
-            color: #ccc;
+            color: #dcdcdc;
             text-align: left;
         }
 
         #services .service-item .icon img {
             width: 80px;
             margin-bottom: 20px;
-            transition: transform 0.3s ease;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
         #services .service-item:hover .icon img {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        /* Gradient Overlay for Service Cards */
-        #services .service-item::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 100%;
-            background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
-            opacity: 0.9;
-            z-index: -1;
-        }
-        
-        /* Top border color animation */
-        #services .service-item::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, crimson, #ffcc33);
-            transition: left 0.4s ease;
-            z-index: 2;
-        }
-
-        #services .service-item:hover::before {
-            left: 0;
+            transform: scale(1.2) rotate(10deg);
         }
 
         @media only screen and (min-width: 768px) {
@@ -418,32 +420,26 @@
             padding: 100px 0;
         }
 
-        #projects .all-projects {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-
         #projects .project-item {
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             width: 90%;
-            margin: 30px auto;
+            margin: 50px auto;
             overflow: hidden;
-            border-radius: 15px; /* Smooth corners */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             transition: transform 0.3s ease;
+            background-color: var(--dark-bg);
         }
         
         #projects .project-item:hover {
-             transform: translateY(-5px);
+             transform: translateY(-10px);
         }
 
         #projects .project-info {
-            padding: 30px;
+            padding: 40px;
             flex-basis: 50%;
             height: 100%;
             display: flex;
@@ -455,7 +451,7 @@
         }
 
         #projects .project-info h1 {
-            font-size: 4rem;
+            font-size: 3.5rem;
             font-weight: 500;
         }
 
@@ -463,167 +459,175 @@
             font-size: 1.8rem;
             font-weight: 500;
             margin-top: 10px;
-            color: crimson;
-        }
-
-        #projects .project-info p {
-            color: #eee;
+            color: var(--primary);
         }
 
         #projects .project-img {
             flex-basis: 50%;
             height: 300px;
+            width: 100%;
             overflow: hidden;
             position: relative;
         }
 
         #projects .project-img img {
-            transition: 0.5s ease transform;
-            border-radius: 0; /* Let container handle corners */
+            transition: 0.8s ease transform;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         #projects .project-item:hover .project-img img {
-            transform: scale(1.1);
+            transform: scale(1.15);
         }
 
         @media only screen and (min-width: 768px) {
             #projects .project-item { flex-direction: row; height: 400px; width: 100%; }
             #projects .project-item:nth-child(even) { flex-direction: row-reverse; }
-            #projects .all-projects .project-info, #projects .all-projects .project-img { height: 100%; }
         }
 
-        /* About Section */
+        /* About Section (No Photo, Typography Focus) */
         #about .about {
-            flex-direction: column-reverse;
+            flex-direction: column;
             text-align: center;
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 100px 20px;
         }
 
-        #about .col-left {
-            width: 250px;
-            height: 360px;
-        }
-
-        #about .col-right {
-            width: 100%;
-        }
-
-        #about .col-right h2 {
-            font-size: 1.8rem;
-            font-weight: 500;
-            letter-spacing: 0.2rem;
-            margin-bottom: 10px;
-        }
-
-        #about .col-right p {
-            margin-bottom: 20px;
-            color: #444;
-        }
-
-        #about .col-right .cta {
-            color: black;
-            border-color: black;
-        }
-        #about .col-right .cta:hover {
-            color: white;
-            border-color: crimson;
-            background-color: crimson;
-        }
-
-        #about .col-left .about-img {
-            height: 100%;
-            width: 100%;
+        #about .about-content {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
             position: relative;
-            border: 10px solid white;
-            border-radius: 15px; /* Smooth corners */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
         
-        /* Inner image corner fix */
-        #about .col-left .about-img img {
-            border-radius: 5px;
-        }
-
-        #about .col-left .about-img::after {
-            content: "";
+        #about .about-content::before {
+            content: '"';
             position: absolute;
-            left: -33px;
-            top: 19px;
-            height: 98%;
-            width: 98%;
-            border: 7px solid crimson;
-            z-index: -1;
-            border-radius: 15px; /* Smooth corners for border effect */
+            top: -20px;
+            left: 20px;
+            font-size: 15rem;
+            color: rgba(220, 20, 60, 0.1);
+            font-family: serif;
         }
 
-        @media screen and (min-width: 768px) {
-            #about .about { flex-direction: row; }
-            #about .col-left { width: 600px; height: 400px; padding-left: 60px; }
-            #about .about .col-left .about-img::after { left: -45px; top: 34px; border: 10px solid crimson; }
-            #about .col-right { text-align: left; padding: 30px; }
-            #about .col-right h1 { text-align: left; }
+        #about p {
+            margin-bottom: 20px;
+            color: #444;
+            font-size: 1.8rem;
         }
 
-        /* Contact Section */
-        #contact .contact {
-            flex-direction: column;
-            max-width: 1200px;
+        /* Telegram / Connect Section */
+        #telegram-section {
+            background-color: #f0f2f5;
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .telegram-container {
+            max-width: 600px;
             margin: 0 auto;
-            padding: 100px 0;
+            background: white;
+            border-radius: 30px;
+            padding: 50px 30px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 136, 204, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid rgba(0, 136, 204, 0.1);
         }
 
-        #contact .contact-item {
-            width: 80%;
-            padding: 30px;
-            text-align: center;
-            border-radius: 15px; /* Smooth corners */
-            margin: 30px;
+        .telegram-icon-box {
+            width: 100px;
+            height: 100px;
+            background: var(--telegram-color);
+            border-radius: 50%;
             display: flex;
-            justify-content: center;
             align-items: center;
-            flex-direction: column;
-            box-shadow: 0px 0px 18px 0 #0000002c;
-            transition: 0.3s ease box-shadow;
-            cursor: pointer;
+            justify-content: center;
+            margin-bottom: 25px;
+            animation: pulse-blue 2s infinite;
+        }
+
+        @keyframes pulse-blue {
+            0% { box-shadow: 0 0 0 0 rgba(0, 136, 204, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(0, 136, 204, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 136, 204, 0); }
+        }
+
+        .telegram-icon-box i {
+            font-size: 50px;
+            color: white;
+            margin-right: 4px; /* Optical adjustment for FA icon */
+        }
+
+        .telegram-container h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .telegram-container p {
+            font-size: 1.5rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .telegram-input-group {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            align-items: center;
+            background: #f5f8fa;
+            border-radius: 50px;
+            padding: 5px;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        .telegram-input-group:focus-within {
+            border-color: var(--telegram-color);
             background: white;
         }
 
-        #contact .contact-item:hover {
-            box-shadow: 0px 10px 20px 0 #0000002c;
+        .telegram-input-group i {
+            padding-left: 20px;
+            font-size: 20px;
+            color: #aaa;
         }
 
-        #contact .icon {
-            width: 70px;
-            margin-bottom: 10px;
+        .telegram-input-group input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.6rem;
+            outline: none;
+            color: #333;
+            font-family: inherit;
         }
 
-        #contact .contact-info h1 {
-            font-size: 2.5rem;
-            font-weight: 500;
-            margin-bottom: 5px;
+        .telegram-btn {
+            background-color: var(--telegram-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+            text-transform: uppercase;
         }
 
-        #contact .contact-info h2 {
-            font-size: 1.3rem;
-            line-height: 2rem;
-            font-weight: 500;
-        }
-
-        @media only screen and (min-width: 768px) {
-            #contact .contact-items {
-                width: 100%;
-                display: flex;
-                flex-direction: row;
-                justify-content: space-evenly;
-            }
-            #contact .contact-item {
-                width: 30%;
-                flex-direction: row;
-            }
-            #contact .contact-item .icon { height: 100px; width: 100px; }
-            #contact .contact-item .contact-info { width: 100%; text-align: left; padding-left: 20px; }
+        .telegram-btn:hover {
+            background-color: #006699;
+            transform: scale(1.05);
         }
 
         /* Footer */
@@ -643,72 +647,43 @@
             font-weight: 500;
             font-size: 1.8rem;
             margin: 10px 0;
+            opacity: 0.8;
         }
 
         #footer .social-icon {
             display: flex;
             margin-bottom: 30px;
+            margin-top: 10px;
         }
 
         #footer .social-item {
             height: 50px;
             width: 50px;
             margin: 0 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s ease;
+        }
+
+        #footer .social-item:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
         }
 
         #footer .social-item img {
-            filter: grayscale(1);
-            transition: 0.3s ease filter;
-        }
-
-        #footer .social-item:hover img {
-            filter: grayscale(0);
+            width: 50%;
+            height: 50%;
+            filter: invert(1); /* Make icons white */
+            border-radius: 0;
         }
 
         #footer p {
             color: white;
             font-size: 1.3rem;
-        }
-        
-        /* =========================================
-           WHATSAPP FLOATING BUTTON
-           ========================================= */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            background-color: #25d366;
-            color: white;
-            border-radius: 50px;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-            z-index: 100;
-            font-size: 1.6rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            animation: float-pulse 2s infinite;
-        }
-
-        .whatsapp-float:hover {
-            transform: scale(1.05);
-            background-color: #20b85a;
-        }
-        
-        .whatsapp-float img {
-            width: 35px;
-            height: 35px;
-            margin-right: 10px;
-            border-radius: 0; /* Icon usually already has shape or is transparent */
-        }
-
-        @keyframes float-pulse {
-            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+            opacity: 0.7;
         }
 
     </style>
@@ -729,11 +704,11 @@
                         <div class="bar"></div>
                     </div>
                     <ul>
-                        <li><a href="#hero" data-after="Home">Home</a></li>
-                        <li><a href="#services" data-after="Service">Services</a></li>
-                        <li><a href="#projects" data-after="Projects">Projects</a></li>
-                        <li><a href="#about" data-after="About">About</a></li>
-                        <li><a href="#contact" data-after="Contact">Contact</a></li>
+                        <li><a href="#hero">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#telegram-section">Connect</a></li>
                     </ul>
                 </div>
             </div>
@@ -747,8 +722,10 @@
                 <h1>Hello, <span></span></h1>
                 <h1>My Name is <span></span></h1>
                 <h1>Gideon <span></span></h1>
-                <p style="color:white; font-size: 2rem; margin-top:10px; font-weight:500;">Full Stack Developer | JavaScript Major</p>
-                <a href="#projects" type="button" class="cta">Portfolio</a>
+                <p style="color:white; font-size: 2rem; margin-top:20px; font-weight:500; text-shadow: 0 2px 5px rgba(0,0,0,0.5);">
+                    Full Stack Developer | JavaScript Major
+                </p>
+                <a href="#projects" type="button" class="cta">View Portfolio</a>
             </div>
         </div>
     </section>
@@ -756,34 +733,34 @@
 
     <!-- Service Section -->
     <section id="services">
-        <div class="services container">
+        <div class="services container reveal">
             <div class="service-top">
                 <h1 class="section-title">Serv<span>i</span>ces</h1>
                 <p>I offer comprehensive full-stack development services tailored to your needs. 
                    I create beautiful, <strong>reactive websites beginning from Ksh 1000</strong>. 
                    Whether you need a simple landing page, a complex web application, or a mobile app, 
-                   I deliver high-quality solutions that drive results.</p>
+                   I deliver high-quality solutions.</p>
             </div>
             <div class="service-bottom">
                 <div class="service-item">
                     <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/code.png" /></div>
                     <h2>Full Stack Web Dev</h2>
-                    <p>Building robust applications using HTML5, CSS3, JavaScript, TypeScript, and Django (Python). From frontend beauty to backend logic.</p>
+                    <p>Building robust applications using HTML5, CSS3, JavaScript, TypeScript, and Django.</p>
                 </div>
                 <div class="service-item">
                     <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/design.png" /></div>
-                    <h2>Mobile App Development</h2>
-                    <p>Over 5 years of experience in real-time programming for mobile applications, ensuring seamless performance.</p>
+                    <h2>Mobile App Dev</h2>
+                    <p>Over 5 years of experience in real-time programming for mobile applications.</p>
                 </div>
                 <div class="service-item">
                     <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/react.png" /></div>
                     <h2>Reactive Websites</h2>
-                    <p>Specializing in modern JavaScript frameworks to build highly interactive and fast websites starting from just Ksh 1000.</p>
+                    <p>Building highly interactive and fast websites starting from just Ksh 1000.</p>
                 </div>
                 <div class="service-item">
                     <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/speed.png" /></div>
-                    <h2>Performance & SEO</h2>
-                    <p>Enhancing website speed, code optimization, and ensuring your site ranks well and performs flawlessly across devices.</p>
+                    <h2>SEO & Performance</h2>
+                    <p>Enhancing website speed, code optimization, and ensuring your site ranks well.</p>
                 </div>
             </div>
         </div>
@@ -792,28 +769,27 @@
 
     <!-- Projects Section -->
     <section id="projects">
-        <div class="projects container">
+        <div class="projects container reveal">
             <div class="projects-header">
                 <h1 class="section-title">Recent <span>Projects</span></h1>
             </div>
             <div class="all-projects">
 
-                <!-- 1. MaxMovies Project (New & Featured) -->
+                <!-- 1. MaxMovies -->
                 <div class="project-item">
                     <div class="project-info">
                         <h1>MaxMovies</h1>
                         <h2>AI-Integrated Movie App</h2>
                         <p>An advanced entertainment platform featuring thousands of series and movies. Integrated with AI to provide smart recommendations and a seamless user experience. Built with robust real-time capabilities.</p>
-                        <!-- Linked to index.html as requested -->
-                        <a href="index.html" class="cta">Watch Movies</a>
+                        <a href="index.html" class="cta">View Project</a>
                     </div>
                     <div class="project-img">
-                        <!-- Make sure you have an image named maxmovies.jpg in your folder -->
-                        <img src="maxmovies.jpg" alt="MaxMovies App Screenshot">
+                        <!-- Placeholder image, replace with your actual screenshot -->
+                        <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1000&auto=format&fit=crop" alt="MaxMovies App">
                     </div>
                 </div>
 
-                <!-- 2. Max AI Project -->
+                <!-- 2. Max AI -->
                 <div class="project-item">
                     <div class="project-info">
                         <h1>Max AI</h1>
@@ -826,9 +802,10 @@
                     </div>
                 </div>
 
+                <!-- 3. Quiz App -->
                 <div class="project-item">
                     <div class="project-info">
-                        <h1>Interactive Quiz App</h1>
+                        <h1>Interactive Quiz</h1>
                         <h2>Engaging Learning Experience</h2>
                         <p>A dynamic quiz application that challenges users with interactive questions, real-time scoring, and engaging animations. Built with JavaScript, HTML, and CSS.</p>
                     </div>
@@ -837,74 +814,44 @@
                     </div>
                 </div>
 
-                <div class="project-item">
-                    <div class="project-info">
-                        <h1>E-Commerce Platform</h1>
-                        <h2>Seamless Online Shopping</h2>
-                        <p>A fully functional e-commerce platform with an intuitive UI, secure checkout, and product filtering. Developed using React.js and Django backend integration.</p>
-                    </div>
-                    <div class="project-img">
-                        <img src="https://files.catbox.moe/4elg2r" alt="E-Commerce Website">
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>
     <!-- End Projects Section -->
 
-    <!-- About Section -->
+    <!-- About Section (Redesigned without photo) -->
     <section id="about">
-        <div class="about container">
-            <div class="col-left">
-                <div class="about-img">
-                    <img src="https://files.catbox.moe/c9ufeh.jpg" alt="Gideon Cheruiyot">
-                </div>
-            </div>
-            <div class="col-right">
-                <h1 class="section-title">About <span>me</span></h1>
+        <div class="about container reveal">
+            <div class="about-content">
+                <h1 class="section-title">About <span>Me</span></h1>
                 <h2>Full Stack Developer | JavaScript Expert</h2>
-                <p>I am a passionate **Full Stack Developer** majoring in **JavaScript**. I specialize in creating beautiful, reactive websites starting from **Ksh 1000**. Beyond web development, I am an experienced App Developer with **over 5 years of real-time programming experience**.</p>
-                <p>My expertise spans across **TypeScript, JavaScript, and Django (Python)**. I transform creative designs into functional digital experiences, writing clean, maintainable code. My goal is to build websites and apps that not only look great but also provide exceptional user experiences and meet business objectives.</p>
-                <a href="./assets/my-cv.pdf" download class="cta">Download Resume</a>
+                <br>
+                <p>I am a passionate <strong>Full Stack Developer</strong> majoring in <strong>JavaScript</strong>. I specialize in creating beautiful, reactive websites starting from <strong>Ksh 1000</strong>. Beyond web development, I am an experienced App Developer with <strong>over 5 years of real-time programming experience</strong>.</p>
+                <p>My expertise spans across <strong>TypeScript, JavaScript, and Django (Python)</strong>. I transform creative designs into functional digital experiences, writing clean, maintainable code. My goal is to build websites and apps that not only look great but also provide exceptional user experiences and meet business objectives.</p>
+                <a href="./assets/my-cv.pdf" download class="cta" style="border-color: black; color: black;">Download Resume</a>
             </div>
         </div>
     </section>
     <!-- End About Section -->
 
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="contact container">
-            <div>
-                <h1 class="section-title">Contact <span>info</span></h1>
-            </div>
-            <div class="contact-items">
-                <div class="contact-item">
-                    <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/phone.png" /></div>
-                    <div class="contact-info">
-                        <h1>Phone</h1>
-                        <h2>+254 746 093 533</h2>
-                        <h2>+254 738 734 134</h2>
-                    </div>
+    <!-- Telegram Connect Section (Replaces Contact) -->
+    <section id="telegram-section">
+        <div class="container reveal">
+            <div class="telegram-container">
+                <div class="telegram-icon-box">
+                    <i class="fab fa-telegram-plane"></i>
                 </div>
-                <div class="contact-item">
-                    <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/new-post.png" /></div>
-                    <div class="contact-info">
-                        <h1>Email</h1>
-                        <h2>gideoncheruiyot761@gmail.com</h2>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/map-marker.png" /></div>
-                    <div class="contact-info">
-                        <h1>Address</h1>
-                        <h2>Chuka, Kenya</h2>
-                    </div>
-                </div>
+                <h2>Connect on Telegram</h2>
+                <p>Have a project in mind? Enter your username or click the button to chat.</p>
+                
+                <form action="https://t.me/your_username_here" target="_blank" class="telegram-input-group">
+                    <i class="fas fa-at"></i>
+                    <input type="text" placeholder="Telegram Username">
+                    <button type="submit" class="telegram-btn">Connect</button>
+                </form>
             </div>
         </div>
     </section>
-    <!-- End Contact Section -->
 
     <!-- Footer -->
     <section id="footer">
@@ -915,31 +862,22 @@
             <h2>Your Complete Web Solution</h2>
             <div class="social-icon">
                 <div class="social-item">
-                    <a href="#"><img src="https://files.catbox.moe/hf2plg.png" /></a>
+                    <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/github.png" /></a>
                 </div>
                 <div class="social-item">
-                   <a href="#"><img src="https://files.catbox.moe/yaj62n.png" /></a>
+                   <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/twitter.png" /></a>
                 </div>
                 <div class="social-item">
-                    <a href="#"><img src="https://files.catbox.moe/9a1w0n.png" /></a>
-                </div>
-                <div class="social-item">
-                    <a href="#"><img src="https://files.catbox.moe/gbk6yt.png" /></a>
+                    <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/linkedin.png" /></a>
                 </div>
             </div>
             <p>Copyright © 2025 Gideon. All rights reserved</p>
         </div>
     </section>
-    <!-- End Footer -->
-
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/254738734134" class="whatsapp-float" target="_blank">
-        <img src="https://img.icons8.com/color/48/whatsapp--v1.png" alt="WhatsApp" />
-        Contact Me
-    </a>
 
     <!-- JavaScript -->
     <script>
+        // Hamburger Menu Logic
         const hamburger = document.querySelector(".hamburger");
         const mobileMenu = document.querySelector(".nav-list ul");
         const menuItem = document.querySelectorAll(".nav-list ul li a");
@@ -957,14 +895,36 @@
             });
         });
 
+        // Header Transparency Logic
         document.addEventListener("scroll", () => {
             var scroll_position = window.scrollY;
             if (scroll_position > 250) {
                 header.style.backgroundColor = "#29323c";
             } else {
-                // Keep transparency or slight tint at top
-                header.style.backgroundColor = "rgba(41, 50, 60, 0.4)"; 
+                header.style.backgroundColor = "rgba(41, 50, 60, 0.2)"; 
             }
+        });
+
+        // Scroll Reveal Animation (Intersection Observer)
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        };
+
+        const revealOptions = {
+            threshold: 0.15 // Trigger when 15% of element is visible
+        };
+
+        const revealObserver = new IntersectionObserver(revealCallback, revealOptions);
+
+        revealElements.forEach(el => {
+            revealObserver.observe(el);
         });
     </script>
 </body>
