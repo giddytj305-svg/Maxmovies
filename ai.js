@@ -1,6 +1,6 @@
 // ---------- Config ----------
 // ⬇️ Paste your backend URL here (e.g. "https://maxx-rho.vercel.app/api/generate")
-const BACKEND_URL = "https://maxmoviesai-backend.vercel.app/api/generate";
+const BACKEND_URL = "https://apiskeith.vercel.app/ai/venice?q=hi";
 
 // ---------- User Memory Setup ---------- 🧠
 let userId = localStorage.getItem("max_user_id");
