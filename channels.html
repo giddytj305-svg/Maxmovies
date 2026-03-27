@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Live TV Channels 📺</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #0a0f1f;
+      --bg-secondary: #151e2c;
+      --text-primary: #ffffff;
+      --text-secondary: #b0bec5;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --danger: #ef4444;
+      --success: #10b981;
+      --card-bg: rgba(21, 30, 44, 0.8);
+      --border-color: rgba(59, 130, 246, 0.3);
+      --glassy-bg: rgba(15, 25, 45, 0.7);
+      --header-height: 60px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #0a0f1f 0%, #1a1f2f 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-hover);
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height);
+      background: var(--glassy-bg);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 4%;
+      z-index: 1000;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+    }
+
+    .logo i {
+      color: var(--accent);
+      font-size: 1.6rem;
+    }
+
+    .live-badge {
+      background: var(--danger);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      animation: pulse 1.5s infinite;
+      margin-left: 8px;
+    }
+
+    /* Back to Home Button - Positioned at Top */
+    .back-home-simple {
+      position: fixed;
+      top: 70px;
+      left: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15, 25, 45, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      border-radius: 40px;
+      padding: 10px 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      z-index: 2000;
+      border-left: 3px solid var(--accent);
+    }
+
+    .back-home-simple:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    }
+
+    .back-home-simple i {
+      font-size: 1.2rem;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; box-shadow: 0 0 8px var(--danger); }
+      100% { opacity: 1; }
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid var(--border-color);
+      border-radius: 30px;
+      padding: 4px 4px 4px 14px;
+      width: 260px;
+      height: 36px;
+      transition: all 0.2s ease;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+      background: rgba(15, 25, 45, 0.9);
+      width: 280px;
+    }
+
+    .search-box input {
+      background: transparent;
+      border: none;
+      color: white;
+      width: 100%;
+      font-size: 0.85rem;
+      padding: 0;
+      height: 100%;
+    }
+
+    .search-box input::placeholder {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+    }
+
+    .search-box input:focus {
+      outline: none;
+    }
+
+    .search-box button {
+      background: var(--accent);
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .search-box button:hover {
+      background: var(--accent-hover);
+      transform: scale(1.05);
+    }
+
+    .main-content {
+      padding-top: var(--header-height);
+      min-height: 100vh;
+    }
+
+    #home-view {
+      padding: 60px 4% 15px 4%;
+    }
+
+    .page-title {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #fff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .page-title i {
+      font-size: 2rem;
+      -webkit-text-fill-color: initial;
+      color: var(--accent);
+    }
+
+    .channels-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .channel-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .channel-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);
+    }
+
+    .channel-thumbnail {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #1a1f2f, #2a2f3f);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .channel-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s ease;
+    }
+
+    .thumbnail-fallback {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a1f2f, #2a2f3f);
+      color: var(--accent);
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+
+    .thumbnail-fallback span {
+      font-size: 0.9rem;
+      margin-top: 8px;
+      color: var(--text-secondary);
+    }
+
+    .channel-card:hover .channel-thumbnail img {
+      transform: scale(1.05);
+    }
+
+    .live-overlay {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--danger);
+      color: white;
+      padding: 3px 6px;
+      border-radius: 3px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      animation: pulse 1.5s infinite;
+      z-index: 2;
+    }
+
+    .live-overlay i {
+      font-size: 0.7rem;
+    }
+
+    .viewer-count {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 3px 6px;
+      border-radius: 3px;
+      font-size: 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      z-index: 2;
+      backdrop-filter: blur(2px);
+    }
+
+    .channel-info {
+      padding: 12px;
+    }
+
+    .channel-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .channel-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .channel-meta i {
+      font-size: 0.8rem;
+      color: var(--accent);
+    }
+
+    #player-view {
+      min-height: calc(100vh - var(--header-height));
+      background: #000;
+    }
+
+    .player-container {
+      width: 100%;
+      background: #000;
+      position: relative;
+    }
+
+    .video-wrapper {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+      position: relative;
+    }
+
+    #native-player {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .no-signal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0a0f1f;
+      color: var(--text-secondary);
+      z-index: 20;
+    }
+
+    .no-signal i {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      color: var(--danger);
+    }
+
+    .player-controls {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 30;
+      display: flex;
+      gap: 8px;
+    }
+
+    .back-btn {
+      background: rgba(15, 25, 45, 0.7);
+      backdrop-filter: blur(5px);
+      border: 1px solid var(--border-color);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 25px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .channel-info-bar {
+      padding: 15px 4%;
+      background: var(--glassy-bg);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .channel-info-bar h1 {
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+      color: white;
+    }
+
+    .channel-details {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .detail-badge {
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid var(--border-color);
+      padding: 4px 10px;
+      border-radius: 25px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .detail-badge.live {
+      background: var(--danger);
+      color: white;
+      border-color: var(--danger);
+      animation: pulse 1.5s infinite;
+    }
+
+    .developer-card {
+      margin: 25px 4%;
+      padding: 0;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.15));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    .developer-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--danger), #8b5cf6);
+      z-index: 1;
+    }
+
+    .developer-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .dev-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px 25px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .dev-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .dev-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: white;
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+      position: relative;
+      animation: avatarGlow 3s infinite alternate;
+    }
+
+    @keyframes avatarGlow {
+      0% { box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4); }
+      100% { box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6); }
+    }
+
+    .dev-avatar::after {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+      z-index: -1;
+      opacity: 0.5;
+      filter: blur(8px);
+    }
+
+    .dev-text {
+      flex: 1;
+    }
+
+    .dev-text h3 {
+      font-size: 1.3rem;
+      margin-bottom: 6px;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dev-text h3 i {
+      color: #f59e0b;
+      font-size: 1.2rem;
+      animation: heartbeat 1.5s infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); color: #ef4444; }
+    }
+
+    .dev-text p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      max-width: 500px;
+    }
+
+    .dev-text p i {
+      color: #fbbf24;
+      margin: 0 2px;
+    }
+
+    .dev-stats {
+      display: flex;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .dev-social {
+      display: flex;
+      gap: 12px;
+    }
+
+    .whatsapp-btn {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: white;
+      padding: 12px 28px;
+      border-radius: 50px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .whatsapp-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .whatsapp-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+    }
+
+    .whatsapp-btn:hover::before {
+      left: 100%;
+    }
+
+    .whatsapp-btn i {
+      font-size: 1.3rem;
+    }
+
+    .github-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid var(--border-color);
+      color: white;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 1.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .github-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .recommended-section {
+      padding: 0 4% 30px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .section-header h2 {
+      font-size: 1.3rem;
+      color: white;
+    }
+
+    .recommended-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .recommended-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .recommended-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    .rec-thumbnail {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #1a1f2f, #2a2f3f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .rec-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .rec-info {
+      padding: 8px;
+    }
+
+    .rec-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .rec-country {
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .rec-country i {
+      font-size: 0.7rem;
+      color: var(--accent);
+    }
+
+    .loading-spinner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(59, 130, 246, 0.3);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .rotate-hint {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(5px);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 25px;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 30;
+      border: 1px solid rgba(255,255,255,0.2);
+      animation: fadeInOut 3s ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(10px); }
+      10% { opacity: 1; transform: translateY(0); }
+      90% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-10px); }
+    }
+
+    /* Offline message styling */
+    .offline-message {
+      text-align: center;
+      padding: 40px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+
+    .offline-message i {
+      font-size: 3rem;
+      color: var(--danger);
+      margin-bottom: 15px;
+    }
+
+    .offline-message h3 {
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .offline-message p {
+      color: var(--text-secondary);
+    }
+
+    .retry-button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      margin-top: 15px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .retry-button:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    .retry-button i {
+      font-size: 1rem;
+      color: white;
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      :root {
+        --header-height: 55px;
+      }
+      .navbar { padding: 0 3%; }
+      .nav-left { gap: 10px; }
+      .logo { font-size: 1.1rem; }
+      .logo i { font-size: 1.4rem; }
+      .back-home-simple { 
+        top: 65px;
+        left: 15px;
+        padding: 8px 16px; 
+        font-size: 0.8rem;
+      }
+      .search-box { width: 180px; }
+      .search-box:focus-within { width: 200px; }
+      .channels-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .recommended-grid { grid-template-columns: repeat(2, 1fr); }
+      .dev-content { flex-direction: column; align-items: flex-start; }
+      .dev-info { width: 100%; }
+      .dev-social { width: 100%; justify-content: flex-start; }
+      .whatsapp-btn { flex: 1; justify-content: center; }
+      #home-view { padding-top: 80px; }
+    }
+
+    @media (max-width: 480px) {
+      .channels-grid { grid-template-columns: 1fr; }
+      .search-box { width: 140px; }
+      .search-box:focus-within { width: 160px; }
+      .dev-avatar { width: 60px; height: 60px; font-size: 2rem; }
+      .dev-text h3 { font-size: 1.1rem; }
+      .dev-text p { font-size: 0.8rem; }
+      .back-home-simple {
+        top: 60px;
+        left: 10px;
+        padding: 6px 12px;
+      }
+    }
+
+    .hidden { display: none !important; }
+  </style>
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-left">
+      <div class="logo" onclick="router.navigate('home')">
+        <i class="fas fa-tv"></i>
+        <span>Live TV</span>
+        <span class="live-badge">LIVE</span>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search channels...">
+        <button onclick="handleSearchClick()"><i class="material-icons">search</i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Back to Home Button - Fixed at Top, links to index.html -->
+  <a href="index.html" class="back-home-simple" id="globalBackHome">
+    <i class="material-icons">arrow_back</i>
+    <span>back to home</span>
+  </a>
+
+  <div class="main-content">
+    <div id="home-view">
+      <div class="page-title">
+        <i class="fas fa-satellite-dish"></i>
+        Live TV Channels
+      </div>
+      <div id="channelsGrid" class="channels-grid"></div>
+    </div>
+
+    <div id="player-view" class="hidden">
+      <div class="player-container">
+        <div class="video-wrapper" id="videoWrapper">
+          <div id="native-player"></div>
+
+          <div class="no-signal hidden" id="noSignal">
+            <i class="fas fa-broadcast-tower"></i>
+            <h3>No Signal</h3>
+            <p>The channel is currently offline</p>
+          </div>
+          
+          <div class="player-controls">
+            <button class="back-btn" onclick="router.navigate('home')">
+              <i class="material-icons">arrow_back</i>
+              Back
+            </button>
+          </div>
+
+          <div class="rotate-hint hidden" id="rotateHint">
+            <i class="fas fa-rotate"></i>
+            <span>Rotate for fullscreen</span>
+          </div>
+        </div>
+        
+        <div class="channel-info-bar" id="playerChannelInfo">
+          <h1 id="playerChannelTitle">Loading...</h1>
+          <div class="channel-details" id="playerChannelDetails"></div>
+        </div>
+
+        <div class="developer-card">
+          <div class="dev-content">
+            <div class="dev-info">
+              <div class="dev-avatar">M</div>
+              <div class="dev-text">
+                <h3>
+                  Project Developed by Max 
+                  <i class="fas fa-heart"></i>
+                </h3>
+                <p>
+                  <i class="fas fa-tv"></i> <strong>10,000+</strong> live TV channels from <strong>100+</strong> countries
+                  <br>
+                  <i class="fas fa-star"></i> All completely FREE • Updated daily • No registration required
+                </p>
+                <div class="dev-stats">
+                  <div class="stat-item">
+                    <span class="stat-value">24/7</span>
+                    <span class="stat-label">Live Support</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-value">4K</span>
+                    <span class="stat-label">Quality</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-value">100%</span>
+                    <span class="stat-label">Free</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="dev-social">
+              <a href="https://wa.me/254738734134" target="_blank" class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i>
+                Contact Developer
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="recommended-section">
+          <div class="section-header">
+            <h2>Recommended Channels</h2>
+            <i class="material-icons" style="color: var(--accent);">recommend</i>
+          </div>
+          <div id="recommendedGrid" class="recommended-grid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Multiple backend endpoints for fallback
+    const BACKENDS = [
+      'https://channelsbackendyt.vercel.app/api',
+      'https://channelsbackend2.vercel.app/api',
+      'https://channelsbackend3.vercel.app/api'
+    ];
+    
+    let currentBackendIndex = 0;
+    let allChannels = [];
+    let currentChannel = null;
+    let thumbnailCache = new Map();
+    
+    const CACHE_DURATION = 8 * 60 * 60 * 1000; // 8 hours
+    let liveStreamsCache = new Map();
+    let currentIframe = null;
+    
+    // Rate limiter to prevent API abuse
+    const rateLimiter = {
+      calls: [],
+      maxCalls: 20, // Max 20 calls per minute per user
+      timeWindow: 60000, // 1 minute
+      
+      canCall() {
+        const now = Date.now();
+        this.calls = this.calls.filter(time => now - time < this.timeWindow);
+        if (this.calls.length >= this.maxCalls) return false;
+        this.calls.push(now);
+        return true;
+      },
+      
+      reset() {
+        this.calls = [];
+      }
+    };
+    
+    // Request queue to prevent overwhelming the server
+    class RequestQueue {
+      constructor() {
+        this.queue = [];
+        this.processing = false;
+        this.delay = 300; // ms between requests
+      }
+      
+      async add(requestFn) {
+        return new Promise((resolve, reject) => {
+          this.queue.push({ requestFn, resolve, reject });
+          this.process();
+        });
+      }
+      
+      async process() {
+        if (this.processing || this.queue.length === 0) return;
+        this.processing = true;
+        
+        while (this.queue.length > 0) {
+          const { requestFn, resolve, reject } = this.queue.shift();
+          try {
+            const result = await requestFn();
+            resolve(result);
+          } catch (error) {
+            reject(error);
+          }
+          await new Promise(r => setTimeout(r, this.delay));
+        }
+        
+        this.processing = false;
+      }
+    }
+    
+    const requestQueue = new RequestQueue();
+    
+    // Debounce function for search
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+    
+    // Exponential backoff retry
+    async function fetchWithRetry(url, options = {}, retries = 3) {
+      for (let i = 0; i < retries; i++) {
+        try {
+          const response = await fetch(url, options);
+          if (!response.ok) {
+            if (response.status === 429 || response.status >= 500) {
+              // Rate limited or server error, retry
+              throw new Error(`HTTP ${response.status}`);
+            }
+            return response;
+          }
+          return response;
+        } catch (error) {
+          if (i === retries - 1) throw error;
+          // Exponential backoff: 1s, 2s, 4s
+          await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i)));
+        }
+      }
+    }
+    
+    // Fetch with backend fallback
+    async function fetchWithFallback(endpoint) {
+      const startIndex = currentBackendIndex;
+      let attempts = 0;
+      
+      while (attempts < BACKENDS.length) {
+        const backend = BACKENDS[currentBackendIndex];
+        try {
+          console.log(`Trying backend: ${backend}`);
+          const response = await fetchWithRetry(`${backend}/${endpoint}`);
+          if (response.ok) {
+            return response;
+          }
+          throw new Error(`Backend returned ${response.status}`);
+        } catch (error) {
+          console.warn(`Backend ${backend} failed:`, error);
+          // Move to next backend
+          currentBackendIndex = (currentBackendIndex + 1) % BACKENDS.length;
+          attempts++;
+        }
+      }
+      
+      throw new Error('All backends failed');
+    }
+    
+    // Connection status detection
+    function updateOnlineStatus() {
+      if (!navigator.onLine) {
+        showOfflineMessage();
+      } else {
+        // Back online, refresh the view
+        if (!document.getElementById('home-view').classList.contains('hidden')) {
+          renderHomeChannels();
+        }
+      }
+    }
+    
+    function showOfflineMessage() {
+      const grid = document.getElementById('channelsGrid');
+      grid.innerHTML = `
+        <div class="offline-message">
+          <i class="fas fa-wifi-slash"></i>
+          <h3>You're offline</h3>
+          <p>Please check your internet connection</p>
+          <button class="retry-button" onclick="window.location.reload()">
+            <i class="fas fa-redo-alt"></i> Retry
+          </button>
+        </div>
+      `;
+    }
+    
+    // Jittered delays for spreading load
+    function randomDelay(min = 100, max = 300) {
+      return new Promise(r => setTimeout(r, min + Math.random() * (max - min)));
+    }
+    
+    const router = {
+      navigate(view, channelId = null) {
+        if (view === 'home') {
+          document.getElementById('home-view').classList.remove('hidden');
+          document.getElementById('player-view').classList.add('hidden');
+          document.title = 'Live TV Channels 📺';
+          stopVideo();
+        } else if (view === 'player' && channelId) {
+          document.getElementById('home-view').classList.add('hidden');
+          document.getElementById('player-view').classList.remove('hidden');
+          loadChannelPlayer(channelId);
+        }
+      }
+    };
+    
+    document.addEventListener('fullscreenchange', () => {
+      if (document.fullscreenElement) {
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(() => {});
+        }
+      } else {
+        if (screen.orientation && screen.orientation.unlock) {
+          screen.orientation.unlock();
+        }
+      }
+    });
+    
+    window.addEventListener('orientationchange', () => {
+      if (window.innerHeight < window.innerWidth) {
+        showRotateHint();
+      }
+    });
+    
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    
+    async function fetchAllChannels() {
+      try {
+        const response = await fetchWithFallback('channels');
+        const data = await response.json();
+        allChannels = data.channels || [];
+        return allChannels;
+      } catch (error) {
+        console.error('Error fetching channels:', error);
+        if (!navigator.onLine) {
+          showOfflineMessage();
+        }
+        return [];
+      }
+    }
+    
+    async function searchLiveStreams(query) {
+      // Rate limiting check
+      if (!rateLimiter.canCall()) {
+        console.warn('Rate limit exceeded, returning empty results');
+        return [];
+      }
+      
+      const cacheKey = `live_${query}`;
+      const now = Date.now();
+      
+      if (liveStreamsCache.has(cacheKey)) {
+        const cached = liveStreamsCache.get(cacheKey);
+        if (now - cached.timestamp < CACHE_DURATION) {
+          console.log('Using cached stream data for:', query);
+          return cached.data;
+        } else {
+          liveStreamsCache.delete(cacheKey);
+        }
+      }
+      
+      // Add to request queue to prevent overwhelming
+      return requestQueue.add(async () => {
+        try {
+          console.log('Fetching fresh stream data for:', query);
+          // Add jitter to spread load
+          await randomDelay();
+          
+          const response = await fetchWithFallback(`search?q=${encodeURIComponent(query)}&max=5`);
+          const data = await response.json();
+          const results = data.results || [];
+          
+          liveStreamsCache.set(cacheKey, {
+            data: results,
+            timestamp: now
+          });
+          
+          return results;
+        } catch (error) {
+          console.error('Error searching live streams:', error);
+          return [];
+        }
+      });
+    }
+    
+    async function getChannelThumbnail(channelName, channelId) {
+      if (thumbnailCache.has(channelId)) {
+        return thumbnailCache.get(channelId);
+      }
+      
+      try {
+        const results = await searchLiveStreams(channelName);
+        if (results && results.length > 0 && results[0].thumbnail) {
+          const thumbnail = results[0].thumbnail;
+          thumbnailCache.set(channelId, thumbnail);
+          return thumbnail;
+        }
+      } catch (error) {
+        console.error(`Error getting thumbnail for ${channelName}:`, error);
+      }
+      return null; // Return null instead of throwing error
+    }
+    
+    function handleImageError(img, channelName) {
+      const fallback = document.createElement('div');
+      fallback.className = 'thumbnail-fallback';
+      fallback.innerHTML = `<i class="fas fa-tv"></i><span>${channelName}</span>`;
+      img.parentNode.replaceChild(fallback, img);
+    }
+    
+    function stopVideo() {
+      const playerContainer = document.getElementById('native-player');
+      if (playerContainer) {
+        playerContainer.innerHTML = '';
+      }
+      if (currentIframe) {
+        currentIframe = null;
+      }
+      document.getElementById('noSignal').classList.add('hidden');
+    }
+    
+    function showNoSignal() {
+      document.getElementById('noSignal').classList.remove('hidden');
+    }
+    
+    function hideNoSignal() {
+      document.getElementById('noSignal').classList.add('hidden');
+    }
+    
+    function showRotateHint() {
+      const hint = document.getElementById('rotateHint');
+      hint.classList.remove('hidden');
+      setTimeout(() => hint.classList.add('hidden'), 3000);
+    }
+    
+    async function playChannel(channel) {
+      currentChannel = channel;
+      
+      document.getElementById('playerChannelTitle').textContent = channel.name;
+      
+      const details = document.getElementById('playerChannelDetails');
+      details.innerHTML = `
+        <span class="detail-badge live">
+          <i class="material-icons">fiber_manual_record</i> LIVE
+        </span>
+        <span class="detail-badge">
+          <i class="material-icons">place</i> ${channel.country || 'International'}
+        </span>
+        <span class="detail-badge">
+          <i class="material-icons">category</i> ${channel.category || 'General'}
+        </span>
+      `;
+      
+      const liveStreams = await searchLiveStreams(channel.name);
+      
+      if (liveStreams && liveStreams.length > 0) {
+        const stream = liveStreams[0];
+        
+        console.log('Playing:', stream.title);
+        
+        hideNoSignal();
+        
+        const playerContainer = document.getElementById('native-player');
+        playerContainer.innerHTML = '';
+        
+        const videoUrl = `https://www.youtube.com/embed/${stream.videoId}?autoplay=1&mute=0&playsinline=1&enablejsapi=1&rel=0&modestbranding=1&controls=1`;
+        
+        const iframe = document.createElement('iframe');
+        iframe.src = videoUrl;
+        iframe.allow = 'autoplay; fullscreen; encrypted-media; picture-in-picture';
+        iframe.allowFullscreen = true;
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        
+        playerContainer.appendChild(iframe);
+        currentIframe = iframe;
+        
+        if (window.innerWidth <= 768) {
+          showRotateHint();
+        }
+        
+      } else {
+        console.log('No live streams found for:', channel.name);
+        // Even with no stream, the channel card can still be clicked
+        // Show a message but don't prevent navigation
+        showNoSignal();
+      }
+      
+      loadRecommendedChannels(channel.country, channel.id);
+    }
+    
+    async function loadChannelPlayer(channelId) {
+      const channel = allChannels.find(c => c.id === channelId);
+      if (channel) await playChannel(channel);
+    }
+    
+    async function loadRecommendedChannels(country, currentId) {
+      let channels = allChannels.filter(c => c.country === country && c.id !== currentId);
+      if (channels.length === 0) {
+        channels = allChannels.filter(c => c.id !== currentId).sort(() => 0.5 - Math.random());
+      }
+      channels = channels.slice(0, 6);
+      
+      const grid = document.getElementById('recommendedGrid');
+      grid.innerHTML = '<div class="loading-spinner"><div class="spinner"></div><p>Loading...</p></div>';
+      
+      // Load thumbnails with delays to spread load
+      const withThumbnails = [];
+      for (const c of channels) {
+        await randomDelay(50, 150);
+        try {
+          const thumbnail = await getChannelThumbnail(c.name, c.id);
+          withThumbnails.push({
+            ...c,
+            thumbnail: thumbnail // May be null, but card will still render with fallback
+          });
+        } catch (error) {
+          // Even if thumbnail fails, still include the channel
+          withThumbnails.push({
+            ...c,
+            thumbnail: null
+          });
+        }
+      }
+      
+      grid.innerHTML = withThumbnails.map(c => `
+        <div class="recommended-card" onclick="router.navigate('player', '${c.id}')">
+          <div class="rec-thumbnail">
+            <img src="${c.thumbnail || c.logo || ''}" alt="${c.name}"
+                 onerror="handleImageError(this, '${c.name.replace(/'/g, "\\'")}')">
+          </div>
+          <div class="rec-info">
+            <div class="rec-name">${c.name}</div>
+            <div class="rec-country"><i class="material-icons">place</i> ${c.country || 'International'}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    async function renderHomeChannels() {
+      // Check online status first
+      if (!navigator.onLine) {
+        showOfflineMessage();
+        return;
+      }
+      
+      const grid = document.getElementById('channelsGrid');
+      grid.innerHTML = '<div class="loading-spinner"><div class="spinner"></div><p>Loading channels...</p></div>';
+      
+      const channels = await fetchAllChannels();
+      
+      if (!channels.length) {
+        grid.innerHTML = '<div style="text-align:center; padding:40px;">No channels available</div>';
+        return;
+      }
+      
+      grid.innerHTML = '<div class="loading-spinner"><div class="spinner"></div><p>Loading thumbnails...</p></div>';
+      
+      // Load thumbnails with delays to spread load
+      const withThumbnails = [];
+      for (const c of channels) {
+        await randomDelay(50, 150);
+        try {
+          const thumbnail = await getChannelThumbnail(c.name, c.id);
+          withThumbnails.push({
+            ...c,
+            thumbnail: thumbnail // May be null, but card will still render with fallback
+          });
+        } catch (error) {
+          // Even if thumbnail fails, still include the channel
+          withThumbnails.push({
+            ...c,
+            thumbnail: null
+          });
+        }
+      }
+      
+      grid.innerHTML = withThumbnails.map(c => `
+        <div class="channel-card" onclick="router.navigate('player', '${c.id}')">
+          <div class="channel-thumbnail">
+            <img src="${c.thumbnail || c.logo || ''}" alt="${c.name}"
+                 onerror="handleImageError(this, '${c.name.replace(/'/g, "\\'")}')">
+            <span class="live-overlay"><i class="material-icons">fiber_manual_record</i> LIVE</span>
+            <span class="viewer-count"><i class="material-icons">visibility</i> ${Math.floor(Math.random()*50000+1000).toLocaleString()}</span>
+          </div>
+          <div class="channel-info">
+            <div class="channel-name">${c.name}</div>
+            <div class="channel-meta">
+              <span><i class="material-icons">place</i> ${c.country || 'International'}</span>
+              <span>•</span>
+              <span>${c.category || 'General'}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // Debounced search function
+    const debouncedSearch = debounce(async function() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      if (!query) return renderHomeChannels();
+      
+      if (!navigator.onLine) {
+        showOfflineMessage();
+        return;
+      }
+      
+      const filtered = allChannels.filter(c => 
+        c.name.toLowerCase().includes(query) ||
+        (c.country && c.country.toLowerCase().includes(query)) ||
+        (c.category && c.category.toLowerCase().includes(query))
+      );
+      
+      const grid = document.getElementById('channelsGrid');
+      
+      if (!filtered.length) {
+        grid.innerHTML = '<div style="text-align:center; padding:40px;">No channels found</div>';
+        return;
+      }
+      
+      grid.innerHTML = '<div class="loading-spinner"><div class="spinner"></div><p>Loading...</p></div>';
+      
+      const withThumbnails = [];
+      for (const c of filtered) {
+        await randomDelay(50, 150);
+        try {
+          const thumbnail = await getChannelThumbnail(c.name, c.id);
+          withThumbnails.push({
+            ...c,
+            thumbnail: thumbnail
+          });
+        } catch (error) {
+          withThumbnails.push({
+            ...c,
+            thumbnail: null
+          });
+        }
+      }
+      
+      grid.innerHTML = withThumbnails.map(c => `
+        <div class="channel-card" onclick="router.navigate('player', '${c.id}')">
+          <div class="channel-thumbnail">
+            <img src="${c.thumbnail || c.logo || ''}" alt="${c.name}"
+                 onerror="handleImageError(this, '${c.name.replace(/'/g, "\\'")}')">
+            <span class="live-overlay"><i class="material-icons">fiber_manual_record</i> LIVE</span>
+            <span class="viewer-count"><i class="material-icons">visibility</i> ${Math.floor(Math.random()*50000+1000).toLocaleString()}</span>
+          </div>
+          <div class="channel-info">
+            <div class="channel-name">${c.name}</div>
+            <div class="channel-meta">
+              <span><i class="material-icons">place</i> ${c.country || 'International'}</span>
+              <span>•</span>
+              <span>${c.category || 'General'}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }, 500);
+    
+    // Handle search button click
+    function handleSearchClick() {
+      debouncedSearch();
+    }
+    
+    window.onload = async () => {
+      await renderHomeChannels();
+      
+      // Add input event listener for real-time search with debounce
+      document.getElementById('searchInput').addEventListener('input', debouncedSearch);
+      
+      // Also keep Enter key for convenience
+      document.getElementById('searchInput').addEventListener('keypress', e => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          debouncedSearch();
+        }
+      });
+    };
+    
+    // Expose functions to global scope
+    window.router = router;
+    window.handleSearchClick = handleSearchClick;
+    window.handleImageError = handleImageError;
+  </script>
+</body>
+</html>
