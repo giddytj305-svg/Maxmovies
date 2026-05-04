@@ -623,6 +623,127 @@
   .hamburger-menu a i { transition: color 0.2s; }
   .hamburger-menu a:hover i { color: var(--accent); }
 
+  /* --- App Install Banner (New) --- */
+  .app-install-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background: rgba(15, 25, 45, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(59, 130, 246, 0.5);
+    border-radius: 20px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    z-index: 10001;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(59,130,246,0.3);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    cursor: pointer;
+  }
+  .app-install-banner.hide-banner {
+    transform: translateY(150%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .app-install-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 2;
+  }
+  .app-install-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--accent), #1e40af);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(59,130,246,0.4);
+  }
+  .app-install-icon i {
+    font-size: 28px;
+    color: white;
+  }
+  .app-install-text {
+    flex: 1;
+  }
+  .app-install-text h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: white;
+  }
+  .app-install-text p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .app-install-banner-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .btn-install-app {
+    background: linear-gradient(135deg, var(--accent), #2563eb);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(59,130,246,0.4);
+    white-space: nowrap;
+  }
+  .btn-install-app:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(59,130,246,0.6);
+  }
+  .close-install-banner {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 18px;
+  }
+  .close-install-banner:hover {
+    background: rgba(229,9,20,0.7);
+    border-color: #e50914;
+  }
+  @media (max-width: 640px) {
+    .app-install-banner {
+      flex-direction: column;
+      align-items: stretch;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      padding: 14px;
+    }
+    .app-install-banner-left {
+      flex: auto;
+    }
+    .app-install-banner-right {
+      justify-content: flex-end;
+    }
+    .btn-install-app {
+      padding: 8px 20px;
+      font-size: 0.85rem;
+    }
+  }
+
   .hero { position: relative; height: 75vh; width: 100%; display: flex; align-items: flex-end; overflow: hidden; } 
   .hero-bg-wrapper { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; background: #000; }
   
@@ -1370,20 +1491,248 @@
   .foot-btn.active-tab, .foot-btn:active, .foot-btn:focus { color: var(--accent); }
   .foot-btn.active-tab i, .foot-btn:active i, .foot-btn:focus i { color: var(--accent); }
 
-  .download-info-card { background: var(--glassy-bg); backdrop-filter: blur(10px); border: 1px solid var(--glassy-border); border-radius: 24px; padding: 40px 20px; text-align: center; margin: 20px auto; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-  .d-icon-circle { width: 80px; height: 80px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; border: 1px solid var(--accent); }
-  .d-icon-circle i { font-size: 36px; color: var(--accent); }
-  .d-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; color: #fff; }
-  .d-text { font-size: 1rem; color: #bbb; line-height: 1.6; margin-bottom: 0; }
-  .coming-soon-badge { background: var(--accent); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; display: inline-block; }
-
-  .countdown-container { display: flex; justify-content: center; gap: 15px; margin-top: 25px; margin-bottom: 25px; }
-  .countdown-item { background: rgba(59, 130, 246, 0.2); backdrop-filter: blur(5px); color: white; padding: 10px 15px; border-radius: 8px; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4); min-width: 60px; display: flex; flex-direction: column; align-items: center; font-family: monospace; transition: transform 0.1s; user-select: none; position: relative; overflow: hidden; border: 1px solid var(--accent); }
-  .countdown-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.1); animation: countdownGlow 2s infinite alternate; }
-  @keyframes countdownGlow { from { opacity: 0; } to { opacity: 1; } }
-  .countdown-value { font-size: 1.8rem; font-weight: 900; line-height: 1; z-index: 1; }
-  .countdown-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; margin-top: 5px; z-index: 1; }
-
+  /* ========== COMPLETELY REVAMPED DOWNLOADS PAGE ========== */
+  .download-info-card {
+    background: linear-gradient(135deg, rgba(15, 25, 45, 0.95), rgba(10, 20, 40, 0.98));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    border-radius: 32px;
+    padding: 50px 30px;
+    text-align: center;
+    margin: 20px auto;
+    max-width: 700px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(59,130,246,0.2);
+    transition: all 0.3s ease;
+  }
+  .download-info-card:hover {
+    border-color: rgba(59, 130, 246, 0.8);
+    box-shadow: 0 25px 50px rgba(59,130,246,0.3);
+    transform: translateY(-3px);
+  }
+  .d-icon-circle {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #3b82f6, #1e40af);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px auto;
+    box-shadow: 0 0 30px rgba(59,130,246,0.6);
+    animation: pulse 2s infinite;
+  }
+  .d-icon-circle i {
+    font-size: 48px;
+    color: white;
+  }
+  .d-title {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+  }
+  .d-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+  }
+  .device-compatibility {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin: 25px 0;
+    padding: 15px;
+    background: rgba(59,130,246,0.1);
+    border-radius: 20px;
+  }
+  .device-badge {
+    text-align: center;
+  }
+  .device-badge i {
+    font-size: 32px;
+    color: #3b82f6;
+    margin-bottom: 8px;
+  }
+  .device-badge span {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+  }
+  .device-badge small {
+    font-size: 0.7rem;
+    color: #46d369;
+  }
+  .android-version-tag {
+    background: #46d36920;
+    border: 1px solid #46d369;
+    border-radius: 30px;
+    padding: 8px 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 15px 0;
+  }
+  .android-version-tag i {
+    color: #46d369;
+  }
+  .ios-coming-soon {
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .ios-coming-soon i {
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+  .ios-coming-soon h3 {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+  }
+  .ios-coming-soon p {
+    font-size: 0.85rem;
+    opacity: 0.9;
+  }
+  .download-btn-large {
+    background: linear-gradient(135deg, #22c55e, #15803d);
+    border: none;
+    padding: 16px 40px;
+    border-radius: 60px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 10px 30px rgba(34,197,94,0.4);
+  }
+  .download-btn-large:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(34,197,94,0.6);
+  }
+  .apk-size-info {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .apk-size-info span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .play-protect-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(34,197,94,0.15);
+    padding: 8px 18px;
+    border-radius: 40px;
+    margin: 15px auto;
+    width: fit-content;
+  }
+  .play-protect-badge i {
+    color: #22c55e;
+    font-size: 20px;
+  }
+  
+  /* NEW: Footer Install Banner Styles */
+  .footer-install-banner {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(21, 128, 61, 0.1));
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    border-radius: 20px;
+    padding: 1.2rem 1.8rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    transition: all 0.3s ease;
+  }
+  .footer-install-banner:hover {
+    border-color: rgba(34, 197, 94, 0.7);
+    box-shadow: 0 8px 25px rgba(34, 197, 94, 0.2);
+    transform: translateY(-2px);
+  }
+  .footer-install-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .footer-install-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #22c55e, #15803d);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  }
+  .footer-install-icon i {
+    font-size: 26px;
+    color: white;
+  }
+  .footer-install-text h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: white;
+  }
+  .footer-install-text p {
+    font-size: 0.85rem;
+    color: #cbd5e6;
+    margin: 0;
+  }
+  .footer-install-btn {
+    background: linear-gradient(135deg, #22c55e, #15803d);
+    border: none;
+    padding: 0.75rem 1.8rem;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  }
+  .footer-install-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.5);
+  }
+  @media (max-width: 640px) {
+    .footer-install-banner {
+      flex-direction: column;
+      text-align: center;
+      padding: 1.2rem;
+    }
+    .footer-install-content {
+      justify-content: center;
+    }
+    .footer-install-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  
   .quality-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; display:flex; align-items: center; justify-content: center; animation: fadeIn 0.2s; }
   .quality-modal { background: var(--glassy-bg); backdrop-filter: blur(10px); width: 90%; max-width: 400px; border-radius: 24px; padding: 20px; border: 1px solid var(--glassy-border); box-shadow: 0 10px 40px rgba(0,0,0,0.7); }
   .qm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--glassy-border); }
@@ -2049,6 +2398,21 @@
     .results-grid {
       gap: 8px;
     }
+    
+    .download-info-card {
+      padding: 30px 20px;
+      margin: 15px;
+    }
+    .d-title {
+      font-size: 1.5rem;
+    }
+    .download-btn-large {
+      padding: 12px 25px;
+      font-size: 1.1rem;
+    }
+    .device-compatibility {
+      gap: 15px;
+    }
   }
 
   @media (min-width: 1920px) {
@@ -2222,10 +2586,28 @@
     <button class="offline-banner-close" onclick="document.getElementById('offline-banner').classList.add('hidden')">×</button>
   </div>
 
+  <!-- App Install Banner (Android only) -->
+  <div id="appInstallBanner" class="app-install-banner" style="display: none;">
+    <div class="app-install-banner-left">
+      <div class="app-install-icon">
+        <i class="material-icons">get_app</i>
+      </div>
+      <div class="app-install-text">
+        <h4>Get MaxMovies App</h4>
+        <p>Faster streaming • Offline downloads • Better experience</p>
+      </div>
+    </div>
+    <div class="app-install-banner-right">
+      <button id="installAppBtn" class="btn-install-app"><i class="material-icons">android</i> Install Now</button>
+      <button id="closeInstallBanner" class="close-install-banner"><i class="material-icons">close</i></button>
+    </div>
+  </div>
+
   <nav class="navbar" role="navigation" aria-label="Primary">
     <div class="nav-left">
       <div class="logo" role="link" tabindex="0" onclick="router.navigate('home')">
-          <img src="https://files.catbox.moe/mwvlbd.webp" alt="App Icon" class="nav-logo-icon">
+          <!-- UPDATED LOGO URL - changed to new JPG image -->
+          <img src="https://files.catbox.moe/lx8cbl.jpg" alt="App Icon" class="nav-logo-icon">
           MaxMovies
       </div>
       <ul class="nav-links" role="menubar" aria-label="Main menu">
@@ -2282,6 +2664,21 @@
     <section class="carousels-container" id="carouselsContainer" aria-label="Carousels"></section>
     
     <footer class="site-footer">
+      <!-- NEW: Footer app install banner -->
+      <div class="footer-install-banner">
+        <div class="footer-install-content">
+          <div class="footer-install-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <div class="footer-install-text">
+            <h4>Get MaxMovies App</h4>
+            <p>Stream anywhere • Offline downloads • Better experience</p>
+          </div>
+        </div>
+        <a href="install.html" class="footer-install-btn">
+          <i class="fas fa-download"></i> Install Now
+        </a>
+      </div>
       <div class="footer-content">
         <div class="footer-section">
           <h3>MaxMovies</h3>
@@ -2479,37 +2876,58 @@
     </section>
   </article>
 
+  <!-- COMPLETELY REVAMPED DOWNLOADS PAGE - No countdown, just app info + install button -->
   <section id="downloads-view" class="view hidden section-padding" aria-labelledby="downloadsTitle" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100vh - 140px); padding-bottom: 80px;">
     <div class="download-info-card">
-        <span class="coming-soon-badge">App Coming Soon</span>
-        <div class="d-icon-circle">
-            <i class="material-icons">cloud_download</i>
+      <div class="d-icon-circle">
+        <i class="material-icons">android</i>
+      </div>
+      <div class="d-title">MaxMovies for Android</div>
+      <div class="d-subtitle">Stream Movies, Series & Music • Offline Download • 4K Ready</div>
+      
+      <div class="play-protect-badge">
+        <i class="material-icons">verified</i>
+        <span>Verified by Google Play Protect</span>
+      </div>
+      
+      <div class="android-version-tag">
+        <i class="material-icons">security</i>
+        <span>Android 7.0 (Nougat) up to Android 15+ Supported</span>
+      </div>
+      
+      <div class="device-compatibility">
+        <div class="device-badge">
+          <i class="fab fa-android"></i>
+          <span>Samsung Galaxy</span>
+          <small>✓ Certified</small>
         </div>
-        <div class="d-title">MaxMovies App Launch In...</div>
-        
-        <div class="countdown-container" id="launchCountdown">
-            <div class="countdown-item">
-                <div class="countdown-value" id="cd-days">00</div>
-                <div class="countdown-label">Days</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-value" id="cd-hours">00</div>
-                <div class="countdown-label">Hours</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-value" id="cd-minutes">00</div>
-                <div class="countdown-label">Minutes</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-value" id="cd-seconds">00</div>
-                <div class="countdown-label">Seconds</div>
-            </div>
+        <div class="device-badge">
+          <i class="fab fa-android"></i>
+          <span>Google Pixel</span>
+          <small>✓ Certified</small>
         </div>
-        <p class="d-text" style="margin-top: 25px;">
-            We are working on a dedicated app with a built-in download manager for offline viewing.
-            <br><br>
-            For now, please continue proceed to your <b>Downloads</b> page on your default browser or go to downloads folder on your device to locate your downloaded files.💯
-        </p>
+        <div class="device-badge">
+          <i class="fas fa-tablet-alt"></i>
+          <span>Foldables & Tablets</span>
+          <small>✓ Optimized</small>
+        </div>
+      </div>
+      
+      <a href="install.html" class="download-btn-large">
+        <i class="material-icons">get_app</i> INSTALL APK v1.0.0
+      </a>
+      
+      <div class="apk-size-info">
+        <span><i class="material-icons">sd_storage</i> ~20 MB</span>
+        <span><i class="material-icons">lock</i> Safe & Secure</span>
+        <span><i class="material-icons">flash_on</i> No Ads</span>
+      </div>
+      
+      <div class="ios-coming-soon">
+        <i class="fab fa-apple"></i>
+        <h3>iOS Version Coming Soon</h3>
+        <p>MaxMovies for iPhone & iPad is currently in development.<br>Stay tuned for the official App Store release!</p>
+      </div>
     </div>
   </section>
 
@@ -2566,6 +2984,69 @@
   </div>
 
   <script>
+  // ---------- App Install Banner Logic (Android only, with localStorage dismissal) ----------
+  (function() {
+    const banner = document.getElementById('appInstallBanner');
+    const installBtn = document.getElementById('installAppBtn');
+    const closeBtn = document.getElementById('closeInstallBanner');
+    const BANNER_HIDDEN_KEY = 'maxmovies_install_banner_hidden';
+    const BANNER_HIDE_TIMESTAMP_KEY = 'maxmovies_install_banner_hidden_time';
+
+    function isAndroid() {
+      return /Android/i.test(navigator.userAgent);
+    }
+
+    function shouldShowBanner() {
+      const hiddenFlag = localStorage.getItem(BANNER_HIDDEN_KEY);
+      if (!hiddenFlag) return true;
+      const hiddenTime = parseInt(localStorage.getItem(BANNER_HIDE_TIMESTAMP_KEY), 10);
+      if (isNaN(hiddenTime)) return true;
+      const now = Date.now();
+      const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+      return (now - hiddenTime) > THIRTY_DAYS;
+    }
+
+    function hideBannerPermanently() {
+      localStorage.setItem(BANNER_HIDDEN_KEY, 'true');
+      localStorage.setItem(BANNER_HIDE_TIMESTAMP_KEY, Date.now().toString());
+      banner.classList.add('hide-banner');
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 300);
+    }
+
+    if (isAndroid() && shouldShowBanner()) {
+      banner.style.display = 'flex';
+      setTimeout(() => {
+        banner.classList.remove('hide-banner');
+      }, 100);
+    } else {
+      banner.style.display = 'none';
+    }
+
+    if (installBtn) {
+      installBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.location.href = 'install.html';
+      });
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        hideBannerPermanently();
+      });
+    }
+
+    if (banner) {
+      banner.addEventListener('click', (e) => {
+        if (e.target === installBtn || installBtn.contains(e.target)) return;
+        if (e.target === closeBtn || closeBtn.contains(e.target)) return;
+        window.location.href = 'install.html';
+      });
+    }
+  })();
+
   function checkConnectivity() {
       const offlineBanner = document.getElementById('offline-banner');
       const loaderOverlay = document.getElementById('loader-overlay');
@@ -2990,7 +3471,6 @@
         ui.renderLibrary(); 
       } else if (route === 'downloads') { 
           next = 'downloads-view'; 
-          startCountdown();
       } else if (route === 'search') {
           next = 'search-view';
           searchUI.init();
@@ -5263,40 +5743,6 @@
       else { container.innerHTML = `<p style="color:#777; padding:20px">No results for "${query}".</p>`; }
     }
   };
-
-  let countdownInterval;
-  
-  function startCountdown() {
-    const targetDate = new Date().getTime() + (7 * 24 * 60 * 60 * 1000); 
-    
-    clearInterval(countdownInterval); 
-    
-    countdownInterval = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        const updateElement = (id, value) => {
-            const el = document.getElementById(id);
-            if (el) el.innerText = String(value).padStart(2, '0');
-        };
-        
-        updateElement('cd-days', days);
-        updateElement('cd-hours', hours);
-        updateElement('cd-minutes', minutes);
-        updateElement('cd-seconds', seconds);
-
-        if (distance < 0) {
-            clearInterval(countdownInterval);
-            const countdownEl = document.getElementById('launchCountdown');
-            if (countdownEl) countdownEl.innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: white;">App Launched!</div>';
-        }
-    }, 1000);
-  }
 
   document.addEventListener('DOMContentLoaded', () => {
     router.init();
