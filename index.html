@@ -35,11 +35,75 @@
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
     background: radial-gradient(circle at 20% 30%, #1a2639, #0a0f1e); 
     color: var(--text-primary); 
-    padding-top: var(--nav-height); 
+    padding-top: calc(var(--nav-height) + 45px); 
     overflow-x: hidden; 
     min-height: 100vh;
   }
   
+  /* Top Install Banner - Always visible */
+  .top-install-banner {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #22c55e, #15803d);
+    color: white;
+    padding: 10px 20px;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    font-weight: 500;
+  }
+  
+  .top-install-banner .banner-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+  }
+  
+  .top-install-banner .banner-text i {
+    font-size: 1.2rem;
+    animation: bounce 1s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+  
+  .top-install-banner .install-link {
+    background: white;
+    color: #15803d;
+    padding: 5px 16px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .top-install-banner .install-link:hover {
+    transform: scale(1.05);
+    background: #f0fdf4;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  
+  @media (max-width: 640px) {
+    body { padding-top: calc(var(--nav-height) + 70px); }
+    .top-install-banner { flex-direction: column; text-align: center; padding: 10px 15px; }
+    .top-install-banner .banner-text { justify-content: center; }
+  }
+
   #loader-overlay {
     position: fixed;
     inset: 0;
@@ -57,7 +121,7 @@
 
   #offline-banner {
     position: fixed;
-    top: var(--nav-height);
+    top: calc(var(--nav-height) + 45px);
     left: 0;
     right: 0;
     background: linear-gradient(135deg, #ff6b6b, #e50914);
@@ -623,7 +687,7 @@
   .hamburger-menu a i { transition: color 0.2s; }
   .hamburger-menu a:hover i { color: var(--accent); }
 
-  /* --- App Install Banner (New) --- */
+  /* --- App Install Banner (Pop-up that shows every time) --- */
   .app-install-banner {
     position: fixed;
     bottom: 20px;
@@ -643,11 +707,18 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(59,130,246,0.3);
     transition: transform 0.3s ease, opacity 0.3s ease;
     cursor: pointer;
+    animation: slideUpBanner 0.5s ease-out;
   }
+  
+  @keyframes slideUpBanner {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
   .app-install-banner.hide-banner {
     transform: translateY(150%);
     opacity: 0;
-    pointer-events: none;
+    animation: none;
   }
   .app-install-banner-left {
     display: flex;
@@ -2567,6 +2638,17 @@
   </style>
 </head>
 <body>
+  <!-- Top Install Banner - Always visible -->
+  <div class="top-install-banner" id="topInstallBanner">
+    <div class="banner-text">
+      <i class="material-icons">offline_bolt</i>
+      <span>Offline App Available Now!</span>
+    </div>
+    <a href="install.html" class="install-link">
+      <i class="material-icons">get_app</i> Click to Install
+    </a>
+  </div>
+
   <div id="loader-overlay">
     <div class="loader-logo">MaxMovies</div>
     <div class="barber-pole-container">
@@ -2586,8 +2668,8 @@
     <button class="offline-banner-close" onclick="document.getElementById('offline-banner').classList.add('hidden')">×</button>
   </div>
 
-  <!-- App Install Banner (Android only) -->
-  <div id="appInstallBanner" class="app-install-banner" style="display: none;">
+  <!-- App Install Banner (Pop-up that shows every time) -->
+  <div id="appInstallBanner" class="app-install-banner" style="display: flex;">
     <div class="app-install-banner-left">
       <div class="app-install-icon">
         <i class="material-icons">get_app</i>
@@ -2984,60 +3066,32 @@
   </div>
 
   <script>
-  // ---------- App Install Banner Logic (Android only, with localStorage dismissal) ----------
+  // App Install Banner Logic - Shows every time (no localStorage blocking)
   (function() {
     const banner = document.getElementById('appInstallBanner');
     const installBtn = document.getElementById('installAppBtn');
     const closeBtn = document.getElementById('closeInstallBanner');
-    const BANNER_HIDDEN_KEY = 'maxmovies_install_banner_hidden';
-    const BANNER_HIDE_TIMESTAMP_KEY = 'maxmovies_install_banner_hidden_time';
-
-    function isAndroid() {
-      return /Android/i.test(navigator.userAgent);
-    }
-
-    function shouldShowBanner() {
-      const hiddenFlag = localStorage.getItem(BANNER_HIDDEN_KEY);
-      if (!hiddenFlag) return true;
-      const hiddenTime = parseInt(localStorage.getItem(BANNER_HIDE_TIMESTAMP_KEY), 10);
-      if (isNaN(hiddenTime)) return true;
-      const now = Date.now();
-      const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
-      return (now - hiddenTime) > THIRTY_DAYS;
-    }
-
-    function hideBannerPermanently() {
-      localStorage.setItem(BANNER_HIDDEN_KEY, 'true');
-      localStorage.setItem(BANNER_HIDE_TIMESTAMP_KEY, Date.now().toString());
-      banner.classList.add('hide-banner');
-      setTimeout(() => {
-        banner.style.display = 'none';
-      }, 300);
-    }
-
-    if (isAndroid() && shouldShowBanner()) {
-      banner.style.display = 'flex';
-      setTimeout(() => {
-        banner.classList.remove('hide-banner');
-      }, 100);
-    } else {
-      banner.style.display = 'none';
-    }
-
+    
+    // Always show the banner on every visit - no localStorage check
+    banner.style.display = 'flex';
+    
     if (installBtn) {
       installBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         window.location.href = 'install.html';
       });
     }
-
+    
     if (closeBtn) {
       closeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        hideBannerPermanently();
+        banner.classList.add('hide-banner');
+        setTimeout(() => {
+          banner.style.display = 'none';
+        }, 300);
       });
     }
-
+    
     if (banner) {
       banner.addEventListener('click', (e) => {
         if (e.target === installBtn || installBtn.contains(e.target)) return;
