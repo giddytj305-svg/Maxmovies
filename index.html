@@ -6,6 +6,8 @@
   <title>MaxMovies | Premium Stream/Download</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- HLS.js library for streaming large files -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
   :root {
     --bg-color: #0a0f1e;
@@ -3066,6 +3068,57 @@
   </div>
 
   <script>
+  // HLS.js integration - Added to handle large file streaming
+  let hls = null;
+  
+  // Function to initialize HLS.js for streaming
+  function initHLSPlayer(videoElement, videoUrl, onReadyCallback) {
+      if (Hls.isSupported()) {
+          if (hls) {
+              hls.destroy();
+          }
+          hls = new Hls({
+              enableWorker: true,
+              lowLatencyMode: true,
+              backBufferLength: 60,
+              maxBufferLength: 30,
+              maxMaxBufferLength: 600,
+              liveSyncDurationCount: 3
+          });
+          hls.loadSource(videoUrl);
+          hls.attachMedia(videoElement);
+          hls.on(Hls.Events.MANIFEST_PARSED, function() {
+              if (onReadyCallback) onReadyCallback();
+          });
+          hls.on(Hls.Events.ERROR, function(event, data) {
+              if (data.fatal) {
+                  switch(data.type) {
+                      case Hls.ErrorTypes.NETWORK_ERROR:
+                          ui.showToast('Network error, trying to reconnect...', 2000);
+                          hls.startLoad();
+                          break;
+                      case Hls.ErrorTypes.MEDIA_ERROR:
+                          ui.showToast('Media error, attempting recovery...', 2000);
+                          hls.recoverMediaError();
+                          break;
+                      default:
+                          console.error('HLS fatal error:', data);
+                          break;
+                  }
+              }
+          });
+          return hls;
+      } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+          // Native HLS support (Safari)
+          videoElement.src = videoUrl;
+          if (onReadyCallback) {
+              videoElement.addEventListener('loadedmetadata', onReadyCallback);
+          }
+          return null;
+      }
+      return null;
+  }
+
   // App Install Banner Logic - Shows every time (no localStorage blocking)
   (function() {
     const banner = document.getElementById('appInstallBanner');
@@ -3262,6 +3315,12 @@
           videoElement.onloadedmetadata = null;
           videoElement.onwaiting = null;
           videoElement.oncanplaythrough = null;
+          
+          // Destroy HLS instance if exists
+          if (hls) {
+              hls.destroy();
+              hls = null;
+          }
           
           try { videoElement.pause(); } catch(e) {}
           videoElement.removeAttribute('src');
@@ -3957,8 +4016,17 @@
             videoContainer.classList.add('ready');
         };
         
-        video.src = state.currentPlayingUrl;
-        video.load();
+        // Use HLS.js for streaming large files
+        const videoUrl = state.currentPlayingUrl;
+        if (videoUrl && (videoUrl.includes('.m3u8') || videoUrl.includes('m3u8'))) {
+            initHLSPlayer(video, videoUrl, () => {
+                videoContainer.classList.add('ready');
+                video.play().catch(e => console.log('Autoplay prevented:', e));
+            });
+        } else {
+            video.src = videoUrl;
+            video.load();
+        }
         
         video.onloadedmetadata = () => {
             const lastTime = parseFloat(localStorage.getItem(state.currentPlayingResumeKey));
@@ -4079,8 +4147,17 @@
           videoContainer.classList.add('ready');
       };
       
-      video.src = state.currentPlayingUrl;
-      video.load();
+      // Use HLS.js for streaming large files
+      const videoUrl = state.currentPlayingUrl;
+      if (videoUrl && (videoUrl.includes('.m3u8') || videoUrl.includes('m3u8'))) {
+          initHLSPlayer(video, videoUrl, () => {
+              videoContainer.classList.add('ready');
+              video.play().catch(e => console.log('Autoplay prevented:', e));
+          });
+      } else {
+          video.src = videoUrl;
+          video.load();
+      }
       
       video.onloadedmetadata = () => {
           const lastTime = parseFloat(localStorage.getItem(state.currentPlayingResumeKey));
@@ -4288,24 +4365,37 @@
             localStorage.setItem(state.currentPlayingResumeKey, video.currentTime);
         }
         
-        const source = document.createElement('source');
-        source.src = newUrl;
-        source.type = 'video/mp4';
-        
-        while(video.firstChild) video.removeChild(video.firstChild);
-        video.appendChild(source);
-        
-        video.load();
-        
-        video.onloadedmetadata = () => {
-            video.currentTime = currentTime;
-            video.onloadedmetadata = null;
-            videoContainer.classList.add('ready');
-            if (!isPaused) { 
-                video.play().catch(e => console.warn('Play after quality switch failed:', e));
-            }
-            ui.showToast(`Quality changed successfully`, 1000);
-        };
+        // Use HLS.js for streaming large files when switching quality
+        if (newUrl && (newUrl.includes('.m3u8') || newUrl.includes('m3u8'))) {
+            stopVideo(video);
+            initHLSPlayer(video, newUrl, () => {
+                video.currentTime = currentTime;
+                videoContainer.classList.add('ready');
+                if (!isPaused) { 
+                    video.play().catch(e => console.warn('Play after quality switch failed:', e));
+                }
+                ui.showToast(`Quality changed successfully`, 1000);
+            });
+        } else {
+            const source = document.createElement('source');
+            source.src = newUrl;
+            source.type = 'video/mp4';
+            
+            while(video.firstChild) video.removeChild(video.firstChild);
+            video.appendChild(source);
+            
+            video.load();
+            
+            video.onloadedmetadata = () => {
+                video.currentTime = currentTime;
+                video.onloadedmetadata = null;
+                videoContainer.classList.add('ready');
+                if (!isPaused) { 
+                    video.play().catch(e => console.warn('Play after quality switch failed:', e));
+                }
+                ui.showToast(`Quality changed successfully`, 1000);
+            };
+        }
         video.load();
     },
 
