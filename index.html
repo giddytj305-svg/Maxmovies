@@ -50,60 +50,68 @@
     right: 0;
     background: linear-gradient(135deg, #22c55e, #15803d);
     color: white;
-    padding: 10px 20px;
+    padding: 5px 12px;
     z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+    flex-wrap: nowrap;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
     border-bottom: 1px solid rgba(255,255,255,0.2);
     backdrop-filter: blur(10px);
     font-weight: 500;
+    height: 32px;
+    min-height: 32px;
   }
   
   .top-install-banner .banner-text {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 0.9rem;
+    gap: 6px;
+    font-size: 0.75rem;
+    white-space: nowrap;
   }
   
   .top-install-banner .banner-text i {
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     animation: bounce 1s infinite;
   }
   
   @keyframes bounce {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
+    50% { transform: translateY(-2px); }
   }
   
   .top-install-banner .install-link {
     background: white;
     color: #15803d;
-    padding: 5px 16px;
-    border-radius: 30px;
+    padding: 3px 10px;
+    border-radius: 16px;
     text-decoration: none;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 3px;
+    flex-shrink: 0;
   }
   
   .top-install-banner .install-link:hover {
     transform: scale(1.05);
     background: #f0fdf4;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   }
   
   @media (max-width: 640px) {
-    body { padding-top: calc(var(--nav-height) + 70px); }
-    .top-install-banner { flex-direction: column; text-align: center; padding: 10px 15px; }
+    body { padding-top: calc(var(--nav-height) + 32px); }
+    .top-install-banner { flex-direction: row; text-align: center; padding: 5px 8px; }
     .top-install-banner .banner-text { justify-content: center; }
+  }
+
+  @media (min-width: 641px) {
+    body { padding-top: calc(var(--nav-height) + 32px); }
   }
 
   #loader-overlay {
