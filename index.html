@@ -6,7 +6,6 @@
   <title>MaxMovies | Premium Stream/Download</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <!-- HLS.js library for streaming large files -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
   :root {
@@ -42,7 +41,6 @@
     min-height: 100vh;
   }
   
-  /* Top Install Banner - Always visible */
   .top-install-banner {
     position: fixed;
     top: var(--nav-height);
@@ -697,7 +695,6 @@
   .hamburger-menu a i { transition: color 0.2s; }
   .hamburger-menu a:hover i { color: var(--accent); }
 
-  /* --- App Install Banner (Pop-up that shows every time) --- */
   .app-install-banner {
     position: fixed;
     bottom: 20px;
@@ -1255,6 +1252,7 @@
       justify-content: center; 
       position: relative; 
       overflow: hidden; 
+      touch-action: pan-y pinch-zoom; /* Allow vertical swipes but prevent horizontal interference */
   }
 
   .video-container:fullscreen, 
@@ -1266,6 +1264,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
+  }
+  
+  .video-container:fullscreen video.custom-player,
+  .video-container:-webkit-full-screen video.custom-player {
+      width: auto;
+      height: 100%;
+      max-width: 100vw;
+      max-height: 100vh;
+      object-fit: contain;
   }
 
   .video-container::backdrop {
@@ -1296,9 +1303,60 @@
   }
   .player-main-title { font-size: 1.4rem; font-weight: 700; color: white; line-height: 1.2; margin: 0; }
   .player-meta-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .player-episode-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .player-episode-badge {
+    background: rgba(59, 130, 246, 0.2);
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--accent);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .player-episode-badge i {
+    font-size: 0.9rem;
+  }
   .meta-badge { background: rgba(59, 130, 246, 0.1); backdrop-filter: blur(5px); color: #ddd; padding: 2px 6px; border-radius: 30px; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--glassy-border); }
   .meta-badge i { font-size: 0.9rem; }
   .meta-badge.quality-badge { color: var(--accent); background: rgba(59, 130, 246, 0.2); border: 1px solid var(--accent); }
+
+  /* Swipe Indicator Animation */
+  .swipe-indicator {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 30px;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 20;
+    pointer-events: none;
+    animation: fadeInOut 0.5s ease;
+    white-space: nowrap;
+  }
+  .swipe-indicator.up { bottom: 20%; }
+  .swipe-indicator.down { top: 20%; }
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateX(-50%) scale(0.8); }
+    20% { opacity: 1; transform: translateX(-50%) scale(1); }
+    80% { opacity: 1; transform: translateX(-50%) scale(1); }
+    100% { opacity: 0; transform: translateX(-50%) scale(0.8); }
+  }
 
   .player-info-section { padding: 20px var(--padding-sides); display: flex; gap: 30px; background: var(--bg-color); border-bottom: 1px solid var(--glassy-border); }
   #player-extra-info { padding: 0 var(--padding-sides) 20px var(--padding-sides); background: var(--bg-color); width: 100%; max-width: 1600px; }
@@ -1572,7 +1630,6 @@
   .foot-btn.active-tab, .foot-btn:active, .foot-btn:focus { color: var(--accent); }
   .foot-btn.active-tab i, .foot-btn:active i, .foot-btn:focus i { color: var(--accent); }
 
-  /* ========== COMPLETELY REVAMPED DOWNLOADS PAGE ========== */
   .download-info-card {
     background: linear-gradient(135deg, rgba(15, 25, 45, 0.95), rgba(10, 20, 40, 0.98));
     backdrop-filter: blur(20px);
@@ -1728,7 +1785,6 @@
     font-size: 20px;
   }
   
-  /* NEW: Footer Install Banner Styles */
   .footer-install-banner {
     background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(21, 128, 61, 0.1));
     backdrop-filter: blur(12px);
@@ -2416,6 +2472,7 @@
     .player-quality-picker .picker-title { display: flex; }
     .player-title-bar { padding: 12px; }
     .player-main-title { font-size: 1.1rem; }
+    .player-episode-info { flex-wrap: wrap; }
     
     .search-input-container {
       flex-direction: column;
@@ -2648,7 +2705,6 @@
   </style>
 </head>
 <body>
-  <!-- Top Install Banner - Always visible -->
   <div class="top-install-banner" id="topInstallBanner">
     <div class="banner-text">
       <i class="material-icons">offline_bolt</i>
@@ -2678,7 +2734,6 @@
     <button class="offline-banner-close" onclick="document.getElementById('offline-banner').classList.add('hidden')">×</button>
   </div>
 
-  <!-- App Install Banner (Pop-up that shows every time) -->
   <div id="appInstallBanner" class="app-install-banner" style="display: flex;">
     <div class="app-install-banner-left">
       <div class="app-install-icon">
@@ -3022,7 +3077,7 @@
 
   <section id="player-page-view" class="view hidden player-page-view" aria-live="polite">
     <div class="video-wrapper" id="playerWrapperPage" role="region" aria-label="Video playback">
-        <div class="video-container controls-visible">
+        <div class="video-container controls-visible" id="videoContainerElement">
             <div class="player-header-bar" id="playerHeaderBar">
                 <div class="player-header-left">
                     <button class="player-header-back-btn btn-secondary" onclick="player.closePage()" aria-label="Close player">
@@ -3044,12 +3099,11 @@
         
         <div id="player-title-bar" class="player-title-bar">
             <h2 id="player-main-title" class="player-main-title">Loading Title...</h2>
-            <div id="player-meta-row" class="player-meta-row">
-                </div>
+            <div id="player-meta-row" class="player-meta-row"></div>
+            <div id="player-episode-info" class="player-episode-info"></div>
         </div>
         
-        <div id="player-extra-info">
-            </div>
+        <div id="player-extra-info"></div>
     </div>
     <section class="section-padding" aria-labelledby="forYouHeading">
         <h3 id="forYouHeading" class="section-title" style="margin-top:20px;">For You</h3>
@@ -3246,7 +3300,12 @@
     multiSelectMode: false,
     selectedEpisodes: new Set(),
     subtitleTracks: [],
-    currentSubtitleTrack: null
+    currentSubtitleTrack: null,
+    // Swipe detection
+    touchStartY: 0,
+    touchEndY: 0,
+    swipeThreshold: 80,
+    swiping: false
   };
 
   async function fetchData(endpoint) {
@@ -3357,11 +3416,13 @@
     if (subject.subjectType === 1) return 'movie';
     if (subject.subjectType === 2) return 'series';
     if (subject.subjectType === 3) return 'music';
-    if (subject.subjectType === 7) return 'short';
+    if (subject.subjectType === 7) return 'short-series';
     
     const title = (subject.title || subject.name || '').toLowerCase();
     const desc = (subject.description || '').toLowerCase();
     const genre = (subject.genre || subject.genres?.join(' ') || '').toLowerCase();
+    
+    if (subject.seasons || subject.episodeCount) return 'series';
     
     const musicKeywords = ['song', 'music', 'audio', 'track', 'album', 'single', 'remix', 'ft.', 'feat', 'arbantone', 'russ millions', 'bongo', 'hiphop', 'classical', 'reggaetone', 'rnb', 'arbantone', 'gengetone', 'afro beats', 'pop', 'gospel', 'instrumental'];
     for (const keyword of musicKeywords) {
@@ -3370,7 +3431,9 @@
         }
     }
     
-    if (subject.seasons || subject.episodeCount) return 'series';
+    if (subject.subjectType === 7 || (subject.episodeCount > 0) || (subject.totalEpisodes > 0)) {
+      return 'short-series';
+    }
     
     return 'movie';
   }
@@ -3429,6 +3492,27 @@
     if (minutes < 60) return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
     if (hours < 24) return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
     return `${days} ${days === 1 ? 'day' : 'days'} ago`;
+  }
+
+  // Show swipe indicator animation
+  function showSwipeIndicator(direction) {
+    const container = document.getElementById('videoContainerElement');
+    if (!container) return;
+    
+    const existingIndicator = container.querySelector('.swipe-indicator');
+    if (existingIndicator) existingIndicator.remove();
+    
+    const indicator = document.createElement('div');
+    indicator.className = `swipe-indicator ${direction === 'up' ? 'up' : 'down'}`;
+    indicator.innerHTML = direction === 'up' 
+      ? '<i class="material-icons">arrow_upward</i> Next Episode'
+      : '<i class="material-icons">arrow_downward</i> Previous Episode';
+    
+    container.appendChild(indicator);
+    
+    setTimeout(() => {
+      if (indicator && indicator.remove) indicator.remove();
+    }, 500);
   }
 
   const searchUI = {
@@ -3515,14 +3599,12 @@
       
       resultsGrid.innerHTML = itemsWithRating.map(item => {
         const contentType = detectContentType(item);
-        const isSeries = contentType === 'series';
+        const isSeries = (contentType === 'series' || contentType === 'short-series');
         const isMusic = contentType === 'music';
-        const isShort = contentType === 'short';
         
         let badgeText = 'MOVIE';
         if (isSeries) badgeText = 'SERIES';
         if (isMusic) badgeText = 'MUSIC';
-        if (isShort) badgeText = 'SHORT';
         
         return `
           <div class="movie-card ${isMusic ? 'music-card' : ''}" onclick="router.navigate('detail/${item.subjectId}')">
@@ -3653,85 +3735,215 @@
         }
     },
     
+    // Setup swipe listeners for short content
+    setupSwipeListeners() {
+      const videoContainer = document.getElementById('videoContainerElement');
+      if (!videoContainer) return;
+      
+      // Remove existing listeners to avoid duplicates
+      videoContainer.removeEventListener('touchstart', this.handleTouchStart);
+      videoContainer.removeEventListener('touchmove', this.handleTouchMove);
+      videoContainer.removeEventListener('touchend', this.handleTouchEnd);
+      
+      // Bind methods
+      this.handleTouchStart = this.handleTouchStart.bind(this);
+      this.handleTouchMove = this.handleTouchMove.bind(this);
+      this.handleTouchEnd = this.handleTouchEnd.bind(this);
+      
+      // Add new listeners
+      videoContainer.addEventListener('touchstart', this.handleTouchStart, { passive: false });
+      videoContainer.addEventListener('touchmove', this.handleTouchMove, { passive: false });
+      videoContainer.addEventListener('touchend', this.handleTouchEnd);
+    },
+    
+    handleTouchStart(e) {
+      state.touchStartY = e.touches[0].clientY;
+    },
+    
+    handleTouchMove(e) {
+      if (!state.touchStartY) return;
+      const currentY = e.touches[0].clientY;
+      const deltaY = currentY - state.touchStartY;
+      
+      // Allow vertical swipes, prevent page scroll during swipe on video container
+      if (Math.abs(deltaY) > 10) {
+        e.preventDefault();
+      }
+    },
+    
+    handleTouchEnd(e) {
+      if (!state.touchStartY) return;
+      
+      state.touchEndY = e.changedTouches[0].clientY;
+      const deltaY = state.touchEndY - state.touchStartY;
+      
+      // Reset touch start
+      state.touchStartY = 0;
+      
+      // Check if this is a short content series
+      const isShortSeries = state.currentSeriesDetails && 
+                           (state.currentSeriesDetails.baseTitle && 
+                            state.currentPlayingID && 
+                            (!state.currentSeriesDetails.seasons || state.currentSeriesDetails.seasons.length > 0));
+      
+      if (!isShortSeries) return;
+      
+      const currentEpisode = state.currentSeriesDetails.currentEpisode;
+      if (!currentEpisode) return;
+      
+      // Prevent rapid swipes with debouncing
+      if (state.swiping) return;
+      state.swiping = true;
+      setTimeout(() => { state.swiping = false; }, 1200);
+      
+      // Swipe UP (negative delta) -> next episode
+      if (deltaY < -state.swipeThreshold) {
+        e.preventDefault();
+        this.goToNextEpisode();
+      }
+      // Swipe DOWN (positive delta) -> previous episode
+      else if (deltaY > state.swipeThreshold) {
+        e.preventDefault();
+        this.goToPreviousEpisode();
+      }
+    },
+    
+    goToNextEpisode() {
+      if (!state.currentSeriesDetails || !state.currentSeriesDetails.currentEpisode) return;
+      
+      const currentEp = state.currentSeriesDetails.currentEpisode;
+      const currentSeasonDetail = state.currentSeriesDetails.seasonDetails.find(d => d.seasonNum === currentEp.season);
+      
+      if (!currentSeasonDetail) return;
+      
+      let nextSeason = currentEp.season;
+      let nextEpisode = currentEp.episode + 1;
+      
+      // Check if we're at the last episode of current season
+      if (nextEpisode > currentSeasonDetail.totalEpisodes) {
+        // Find next season
+        const nextSeasonDetail = state.currentSeriesDetails.seasonDetails.find(d => d.seasonNum === currentEp.season + 1);
+        if (nextSeasonDetail) {
+          nextSeason = currentEp.season + 1;
+          nextEpisode = 1;
+        } else {
+          ui.showToast('You\'ve reached the end!', 1500);
+          showSwipeIndicator('up');
+          return;
+        }
+      }
+      
+      showSwipeIndicator('up');
+      ui.showToast(`⬆️ Episode ${nextEpisode}`, 1000);
+      this.switchEpisode(nextSeason, nextEpisode);
+    },
+    
+    goToPreviousEpisode() {
+      if (!state.currentSeriesDetails || !state.currentSeriesDetails.currentEpisode) return;
+      
+      const currentEp = state.currentSeriesDetails.currentEpisode;
+      
+      if (currentEp.episode > 1) {
+        showSwipeIndicator('down');
+        ui.showToast(`⬇️ Episode ${currentEp.episode - 1}`, 1000);
+        this.switchEpisode(currentEp.season, currentEp.episode - 1);
+      } else if (currentEp.season > 1) {
+        // Go to last episode of previous season
+        const prevSeasonDetail = state.currentSeriesDetails.seasonDetails.find(d => d.seasonNum === currentEp.season - 1);
+        if (prevSeasonDetail) {
+          showSwipeIndicator('down');
+          ui.showToast(`⬇️ Season ${currentEp.season - 1} Episode ${prevSeasonDetail.totalEpisodes}`, 1000);
+          this.switchEpisode(currentEp.season - 1, prevSeasonDetail.totalEpisodes);
+        } else {
+          ui.showToast('This is the first episode!', 1500);
+          showSwipeIndicator('down');
+        }
+      } else {
+        ui.showToast('This is the first episode!', 1500);
+        showSwipeIndicator('down');
+      }
+    },
+    
     async playShortContent(id, subject, titleText, posterUrl) {
-        console.log('[Short] Playing short content:', id, titleText);
+        console.log('[Short-Series] Playing short content:', id, titleText);
         
         const shortId = subject?.subjectId || id;
         
-        ui.showToast('Loading short video...', 2000);
+        ui.showToast('Loading short content...', 2000);
         
-        // For short content, we need to include season and episode parameters (default to 1,1)
-        const sources = await this.getShortSources(shortId);
+        const infoData = await fetchData('/info/' + encodeURIComponent(shortId));
+        const resource = infoData?.results?.resource || {};
+        
+        let totalEpisodes = 1;
+        if (resource.episodeCount) {
+          totalEpisodes = resource.episodeCount;
+        } else if (resource.totalEpisodes) {
+          totalEpisodes = resource.totalEpisodes;
+        } else if (resource.seasons && resource.seasons.length > 0) {
+          totalEpisodes = resource.seasons.reduce((sum, season) => {
+            if (season.maxEp) return sum + Number(season.maxEp);
+            if (season.count) return sum + Number(season.count);
+            return sum + 1;
+          }, 0);
+        } else {
+          totalEpisodes = 1;
+        }
+        
+        const shortSeasons = [{
+          se: 1,
+          maxEp: totalEpisodes,
+          count: totalEpisodes,
+          episodes: Array.from({ length: totalEpisodes }, (_, i) => i + 1)
+        }];
+        
+        state.currentSeriesDetails = {
+          id: shortId,
+          seasons: shortSeasons,
+          baseTitle: titleText || subject.title || 'Short Content',
+          posterUrl: posterUrl,
+          currentEpisode: { season: 1, episode: 1 },
+          seasonDetails: [{ seasonNum: 1, totalEpisodes: totalEpisodes }]
+        };
+        
+        const sources = await this.getShortEpisodeSources(shortId, 1, 1);
         
         if (!sources || sources.length === 0) {
-            console.error('[Short] No sources found for:', shortId);
-            ui.showToast('No playable sources found for this short', 3000, true);
+            console.error('[Short-Series] No sources found for episode 1:', shortId);
+            ui.showToast('No playable sources found for this content', 3000, true);
             return;
         }
         
-        console.log('[Short] Sources found:', sources.length);
+        console.log('[Short-Series] Sources found:', sources.length);
         
         state.playerSources = sources;
         state.currentPlayingID = shortId;
-        state.currentPlayingTitle = titleText || 'Short Video';
+        state.currentPlayingTitle = `${titleText || 'Short Content'} - Episode 1`;
         state.currentPlayingPoster = posterUrl;
-        state.currentPlayingResumeKey = PLAYBACK_TIME_KEY_PREFIX + shortId;
+        state.currentPlayingResumeKey = PLAYBACK_TIME_KEY_PREFIX + shortId + '/S1E1';
         
-        // Pass episode info (season 1, episode 1) for short content
         const episodeInfo = { season: 1, episode: 1 };
-        ui.showQualitySelector(sources, titleText || 'Short Video', true, episodeInfo);
+        ui.showQualitySelector(sources, `${titleText || 'Short Content'} - Episode 1`, true, episodeInfo);
+        
+        // Setup swipe listeners for short content
+        this.setupSwipeListeners();
     },
     
-    async getShortSources(id) {
-        // Try with season/episode parameters first (this works!)
-        const endpoints = [
-            `/sources/${encodeURIComponent(id)}?season=1&episode=1`,
-            `/sources/${encodeURIComponent(id)}?season=1&episode=1&type=short`,
-            `/sources/${encodeURIComponent(id)}?type=short`,
-            `/sources/${encodeURIComponent(id)}`,
-            `/info/${id}`
-        ];
-        
-        for (const endpoint of endpoints) {
-            try {
-                console.log('[Short] Trying endpoint:', endpoint);
-                const data = await fetchData(endpoint);
-                
-                // Try to extract sources from response
-                let sources = this.normalizeSources(data);
-                
-                // If no sources found, try to get from resource
-                if (!sources.length && data?.results?.resource) {
-                    sources = this.normalizeSources(data.results.resource);
-                }
-                
-                // If still no sources, try from subject
-                if (!sources.length && data?.results?.subject) {
-                    const subject = data.results.subject;
-                    if (subject.videoUrl || subject.stream_url) {
-                        sources = [{
-                            quality: 'HD',
-                            stream_url: subject.videoUrl || subject.stream_url,
-                            url: subject.videoUrl || subject.stream_url
-                        }];
-                    }
-                }
-                
-                // Also check if data.results is directly an array
-                if (!sources.length && data?.results && Array.isArray(data.results)) {
-                    sources = this.normalizeSources({ results: data.results });
-                }
-                
-                if (sources && sources.length > 0) {
-                    console.log('[Short] Sources found from endpoint:', endpoint);
-                    return sources;
-                }
-            } catch (e) {
-                console.warn('[Short] Endpoint failed:', endpoint, e);
+    async getShortEpisodeSources(id, seasonNum, episodeNum) {
+        const endpoint = `/sources/${encodeURIComponent(id)}?season=${seasonNum}&episode=${episodeNum}`;
+        try {
+            console.log('[Short-Series] Fetching episode sources from:', endpoint);
+            const data = await fetchData(endpoint);
+            const sources = this.normalizeSources(data);
+            
+            if (sources && sources.length > 0) {
+                console.log('[Short-Series] Sources found for episode', seasonNum, episodeNum);
+                return sources;
             }
+            return [];
+        } catch (e) {
+            console.warn('[Short-Series] Failed to fetch episode sources:', e);
+            return [];
         }
-        
-        return [];
     },
 
     normalizeSources(raw) {
@@ -3765,14 +3977,17 @@
       
       const infoData = await fetchData('/info/' + encodeURIComponent(id));
       const subject = infoData?.results?.subject || infoData?.results || {};
-      const contentType = detectContentType(subject);
+      const resource = infoData?.results?.resource || {};
+      let contentType = detectContentType(subject);
       
-      if (contentType === 'short') {
+      const isShortWithEpisodes = (contentType === 'short-series' || subject.subjectType === 7 || (resource.episodeCount > 0) || (resource.totalEpisodes > 0));
+      
+      if (isShortWithEpisodes && !episodeInfo) {
         await this.playShortContent(id, subject, titleText, posterUrl);
         return;
       }
       
-      const isSeries = contentType === 'series';
+      const isSeries = (contentType === 'series' || contentType === 'short-series');
       
       let endpoint = `/sources/${encodeURIComponent(id)}`;
       
@@ -3950,36 +4165,108 @@
         const nextPath = `${id}/S${seasonNum}E${epNum}`;
         const nextTitle = `${state.currentSeriesDetails.baseTitle} - Season ${seasonNum} Episode ${epNum}`;
         const posterUrl = state.currentSeriesDetails.posterUrl;
-        ui.showToast(`Switching to: ${nextTitle}`);
+        
+        // Show loading state
+        ui.showToast(`Loading Episode ${epNum}...`, 1000);
+        
+        // Update UI immediately
         document.querySelectorAll('.player-ep-box').forEach(b => {
             const isActive = Number(b.dataset.season) === seasonNum && Number(b.dataset.ep) === epNum;
             b.classList.toggle('active', isActive);
         });
-        const video = document.getElementById('video-target-page');
-        if (video.playbackSaver) clearInterval(video.playbackSaver);
-        stopVideo(video);
+        
+        // Update episode info
+        state.currentSeriesDetails.currentEpisode = { season: seasonNum, episode: epNum };
+        state.currentPlayingTitle = nextTitle;
+        state.currentPlayingResumeKey = PLAYBACK_TIME_KEY_PREFIX + nextPath;
+        
+        // Fetch sources in parallel while showing UI
         const endpoint = `/sources/${encodeURIComponent(id)}?season=${seasonNum}&episode=${epNum}`;
         const raw = await fetchData(endpoint);
+        
+        if (!raw) {
+            ui.showToast('Failed to load episode', 2000, true);
+            return;
+        }
+        
         const sources = player.normalizeSources(raw);
         
+        if (!sources.length) {
+            ui.showToast('No playable sources for this episode', 2000, true);
+            return;
+        }
+        
+        // Get subtitles if available
         state.subtitleTracks = [];
         if (raw && raw.subtitles && Array.isArray(raw.subtitles)) {
             state.subtitleTracks = raw.subtitles;
         }
         state.currentSubtitleTrack = null;
         
-        if (!sources.length) {
-            alert('No playable sources found for this episode.');
-            player.open(state.currentPlayingID, `S${state.currentSeriesDetails.currentEpisode.season}E${state.currentSeriesDetails.currentEpisode.episode}`);
-            return;
+        // Use previously selected quality if available, else use first source
+        let selectedSource = sources[0];
+        if (state.userChosenQuality) {
+            const sameQuality = sources.find(s => s.quality === state.userChosenQuality.quality);
+            if (sameQuality) selectedSource = sameQuality;
         }
-        state.currentPlayingTitle = nextTitle;
-        const streamSource = sources.find(s => s.stream_url) || sources[0];
-        state.currentPlayingUrl = streamSource.stream_url || streamSource.url;
+        
+        state.currentPlayingUrl = selectedSource.stream_url || selectedSource.url;
         state.playerSources = sources;
-        state.currentPlayingResumeKey = PLAYBACK_TIME_KEY_PREFIX + nextPath;
-        state.currentSeriesDetails.currentEpisode = { season: seasonNum, episode: epNum };
-        router.navigate(`player/${nextPath}`);
+        
+        // Load and play immediately
+        const video = document.getElementById('video-target-page');
+        if (!video) return;
+        
+        if (video.playbackSaver) clearInterval(video.playbackSaver);
+        stopVideo(video);
+        
+        const videoContainer = video.closest('.video-container');
+        const videoUrl = state.currentPlayingUrl;
+        
+        // Fast load for HLS or MP4
+        if (videoUrl && (videoUrl.includes('.m3u8') || videoUrl.includes('m3u8'))) {
+            initHLSPlayer(video, videoUrl, () => {
+                videoContainer.classList.add('ready');
+                video.play().catch(e => console.log('Autoplay prevented:', e));
+                ui.showToast(`Now playing Episode ${epNum}`, 800);
+            });
+        } else {
+            video.src = videoUrl;
+            video.load();
+            video.onloadedmetadata = () => {
+                videoContainer.classList.add('ready');
+                video.play().catch(e => console.log('Autoplay prevented:', e));
+                ui.showToast(`Now playing Episode ${epNum}`, 800);
+                video.onloadedmetadata = null;
+            };
+        }
+        
+        // Setup playback saver
+        if (video.playbackSaver) clearInterval(video.playbackSaver);
+        video.playbackSaver = setInterval(() => {
+            if (!video.paused && video.currentTime > 5 && video.currentTime < (video.duration - 5)) {
+                localStorage.setItem(state.currentPlayingResumeKey, video.currentTime);
+            }
+        }, 15000);
+        
+        // Update UI display
+        this.updateEpisodeInfoDisplay(seasonNum, epNum);
+    },
+    
+    updateEpisodeInfoDisplay(seasonNum, epNum) {
+        const episodeInfoContainer = document.getElementById('player-episode-info');
+        if (episodeInfoContainer && state.currentSeriesDetails) {
+            const seasonDetail = state.currentSeriesDetails.seasonDetails.find(d => d.seasonNum === seasonNum);
+            const totalEpisodes = seasonDetail ? seasonDetail.totalEpisodes : '?';
+            episodeInfoContainer.innerHTML = `
+                <span class="player-episode-badge">
+                    <i class="material-icons">playlist_play</i> Season ${seasonNum} Episode ${epNum} of ${totalEpisodes}
+                </span>
+                <span class="player-episode-badge">
+                    <i class="material-icons">swap_vert</i> Swipe ↑↓ to change episode
+                </span>
+            `;
+        }
     },
 
     open: async (id, param2) => {
@@ -3990,15 +4277,22 @@
       const subject = detailData?.results?.subject || detailData?.results || {};
       const resource = detailData?.results?.resource || {};
       const baseTitle = subject.title || subject.name || 'Untitled';
-      const contentType = detectContentType(subject);
-      const isSeries = contentType === 'series';
+      let contentType = detectContentType(subject);
+      
+      const isShortWithEpisodes = (contentType === 'short-series' || subject.subjectType === 7 || (resource.episodeCount > 0) || (resource.totalEpisodes > 0));
+      
+      if (isShortWithEpisodes && !param2) {
+        param2 = 'S1E1';
+      }
+      
+      const isSeries = (contentType === 'series' || contentType === 'short-series' || isShortWithEpisodes);
       
       const resumeSuffix = param2 ? `/${param2}` : '';
       state.currentPlayingResumeKey = PLAYBACK_TIME_KEY_PREFIX + id + resumeSuffix;
 
       let episodeInfo = null;
       let title = baseTitle;
-      if (param2) {
+      if (param2 && (param2.includes('S') || param2.includes('E'))) {
         title = `${baseTitle} - ${param2.replace('S', 'Season ').replace('E', ' Episode ')}`;
         const match = param2.match(/S(\d+)E(\d+)/);
         if (match) { episodeInfo = { season: Number(match[1]), episode: Number(match[2]) }; }
@@ -4008,16 +4302,28 @@
       if (!state.currentPlayingPoster) { state.currentPlayingPoster = subject.cover?.url || subject.thumbnail || ''; }
       
       if (isSeries) {
-           const seasonDetails = (resource?.seasons || []).map(s => {
+           let seasonsData = resource?.seasons || [];
+           
+           if (seasonsData.length === 0 && isShortWithEpisodes) {
+             let totalEpisodes = resource.episodeCount || resource.totalEpisodes || 1;
+             seasonsData = [{
+               se: 1,
+               maxEp: totalEpisodes,
+               count: totalEpisodes,
+               episodes: Array.from({ length: totalEpisodes }, (_, i) => i + 1)
+             }];
+           }
+           
+           const seasonDetails = seasonsData.map(s => {
                 let total = 0;
                 if (s.maxEp) total = Number(s.maxEp);
                 else if (s.count) total = Number(s.count);
                 else if (Array.isArray(s.episodes)) total = s.episodes.length;
                 else if (s.allEp) { total = Number(s.allEp) || 0; }
-                const seasonNum = s.se ? Number(s.se) : (resource?.seasons || []).findIndex(item => item === s) + 1;
+                const seasonNum = s.se ? Number(s.se) : (seasonsData || []).findIndex(item => item === s) + 1;
                 return { seasonNum, totalEpisodes: total };
             });
-           state.currentSeriesDetails = { id: id, seasons: resource?.seasons || [], baseTitle: baseTitle, posterUrl: state.currentPlayingPoster, currentEpisode: episodeInfo, seasonDetails: seasonDetails };
+           state.currentSeriesDetails = { id: id, seasons: seasonsData, baseTitle: baseTitle, posterUrl: state.currentPlayingPoster, currentEpisode: episodeInfo, seasonDetails: seasonDetails };
       } else { state.currentSeriesDetails = null; }
       
       if (state.userChosenStreamUrl && state.userChosenQuality) {
@@ -4025,7 +4331,7 @@
         state.playerSources = [state.userChosenQuality];
         state.currentSubtitleTrack = null;
         
-        player.renderPlayerInfo(subject, isSeries, resource?.seasons || [], episodeInfo, contentType);
+        player.renderPlayerInfo(subject, isSeries, state.currentSeriesDetails?.seasons || [], episodeInfo, contentType);
         player.loadRecommended(id);
         
         const video = document.getElementById('video-target-page');
@@ -4122,6 +4428,14 @@
             };
         }
         
+        // Setup swipe listeners if this is short content
+        if (isShortWithEpisodes) {
+          this.setupSwipeListeners();
+          if (episodeInfo) {
+            this.updateEpisodeInfoDisplay(episodeInfo.season, episodeInfo.episode);
+          }
+        }
+        
         state.userChosenStreamUrl = null;
         state.userChosenQuality = null;
         
@@ -4129,13 +4443,12 @@
       }
       
       let endpoint = `/sources/${encodeURIComponent(id)}`;
-      if (isSeries && param2) {
+      if (isSeries && param2 && (param2.includes('S') || param2.includes('E'))) {
            const match = param2.match(/S(\d+)E(\d+)/);
            if (match) { 
                 endpoint += `?season=${match[1]}&episode=${match[2]}`; 
            }
-      } else if (!isSeries && contentType === 'short') {
-           // For short content without episode params, add default season/episode
+      } else if (isShortWithEpisodes && !param2) {
            endpoint += `?season=1&episode=1`;
       }
       
@@ -4158,7 +4471,7 @@
       const streamSource = state.playerSources.find(s => s.stream_url) || state.playerSources[0];
       state.currentPlayingUrl = streamSource.stream_url || streamSource.url;
       
-      player.renderPlayerInfo(subject, isSeries, resource?.seasons || [], episodeInfo, contentType);
+      player.renderPlayerInfo(subject, isSeries, state.currentSeriesDetails?.seasons || [], episodeInfo, contentType);
       player.loadRecommended(id);
       
       const video = document.getElementById('video-target-page');
@@ -4254,11 +4567,20 @@
               player.resumePlayback(nextPath, nextTitle, state.currentSeriesDetails.posterUrl);
           };
       }
+      
+      // Setup swipe listeners if this is short content
+      if (isShortWithEpisodes) {
+        this.setupSwipeListeners();
+        if (episodeInfo) {
+          this.updateEpisodeInfoDisplay(episodeInfo.season, episodeInfo.episode);
+        }
+      }
     },
     
     renderPlayerInfo: (subject, isSeries, seasons, currentEpisode, contentType = 'movie') => {
         const titleEl = document.getElementById('player-main-title');
         const metaRow = document.getElementById('player-meta-row');
+        const episodeInfoContainer = document.getElementById('player-episode-info');
         const extraInfoContainer = document.getElementById('player-extra-info');
         
         extraInfoContainer.innerHTML = ''; 
@@ -4279,15 +4601,31 @@
             epBadge.className = 'meta-badge';
             epBadge.innerText = `S${currentEpisode.season} E${currentEpisode.episode}`;
             metaRow.appendChild(epBadge);
+            
+            // Show episode info with swipe hint for short content
+            if (state.currentSeriesDetails) {
+                const seasonDetail = state.currentSeriesDetails.seasonDetails.find(d => d.seasonNum === currentEpisode.season);
+                const totalEpisodes = seasonDetail ? seasonDetail.totalEpisodes : '?';
+                episodeInfoContainer.innerHTML = `
+                    <span class="player-episode-badge">
+                        <i class="material-icons">playlist_play</i> Season ${currentEpisode.season} Episode ${currentEpisode.episode} of ${totalEpisodes}
+                    </span>
+                    <span class="player-episode-badge">
+                        <i class="material-icons">swap_vert</i> Swipe ↑↓ to change episode
+                    </span>
+                `;
+            } else {
+                episodeInfoContainer.innerHTML = '';
+            }
         } else {
              let typeText = 'MOVIE';
              if (contentType === 'music') typeText = 'MUSIC';
-             if (contentType === 'series') typeText = 'SERIES';
-             if (contentType === 'short') typeText = 'SHORT';
+             if (contentType === 'series' || contentType === 'short-series') typeText = 'SERIES';
              const typeBadge = document.createElement('span');
              typeBadge.className = 'meta-badge';
              typeBadge.innerText = typeText;
              metaRow.appendChild(typeBadge);
+             episodeInfoContainer.innerHTML = '';
         }
 
         player.renderQualityPicker(state.playerSources);
@@ -4912,14 +5250,12 @@
         }
         
         const contentType = detectContentType(item);
-        const isSeries = contentType === 'series';
+        const isSeries = (contentType === 'series' || contentType === 'short-series');
         const isMusic = contentType === 'music';
-        const isShort = contentType === 'short';
         
         let badgeText = 'MOVIE';
         if (isSeries) badgeText = 'SERIES';
         if (isMusic) badgeText = 'MUSIC';
-        if (isShort) badgeText = 'SHORT';
         
         const typeBadge = document.createElement('span');
         typeBadge.className = isSeries ? 'card-type-badge' : 'movie-identifier-badge-type';
@@ -5076,9 +5412,8 @@
       row.className = 'carousel-row';
       items.forEach(item => {
         const contentType = detectContentType(item);
-        const isSeries = contentType === 'series';
+        const isSeries = (contentType === 'series' || contentType === 'short-series');
         const isMusic = contentType === 'music';
-        const isShort = contentType === 'short';
         const card = document.createElement('div');
         card.className = `movie-card ${isMusic ? 'music-card' : ''}`;
         if(cardWidth) card.style.flex = `0 0 ${cardWidth}`;
@@ -5091,7 +5426,6 @@
         let badgeText = 'MOVIE';
         if (isSeries) badgeText = 'SERIES';
         if (isMusic) badgeText = 'MUSIC';
-        if (isShort) badgeText = 'SHORT';
         
         const badge = document.createElement('span');
         badge.className = isSeries ? 'card-type-badge' : 'movie-identifier-badge-type';
@@ -5173,18 +5507,25 @@
       document.getElementById('detailMeta').innerHTML = `<span>${year}</span> <span>${runtime}</span> <span>${genres}</span>`;
       
       let typeText = 'MOVIE';
-      if (contentType === 'series') typeText = 'SERIES';
+      if (contentType === 'series' || contentType === 'short-series') typeText = 'SERIES';
       if (contentType === 'music') typeText = 'MUSIC';
-      if (contentType === 'short') typeText = 'SHORT';
       document.getElementById('typeBadge').innerText = typeText;
 
       const playBtn = document.getElementById('detailPlayBtn');
       const downloadBtn = document.getElementById('detailDownloadBtn');
-      const episodesSection = document.getElementById('episodesSection'); 
+      const episodesSection = document.getElementById('episodesSection');
+      const playBtnText = document.getElementById('playBtnText');
 
       playBtn.classList.remove('hidden');
       downloadBtn.classList.remove('hidden');
-      document.getElementById('playBtnText').innerText = 'Stream'; 
+      
+      // Set button text based on content type
+      if (isSeries || contentType === 'short-series') {
+        playBtnText.innerText = 'View Episodes';
+      } else {
+        playBtnText.innerText = 'Stream';
+      }
+      
       const trailerSection = document.getElementById('trailerSection');
       const trailerUrl = movie.trailer?.videoAddress?.url || movie.trailer?.url || ''; 
       
@@ -5198,7 +5539,11 @@
           trailerSection.classList.add('hidden');
       }
 
-      if (!isSeries) {
+      if (isSeries || contentType === 'short-series') {
+        episodesSection.classList.add('hidden'); 
+        playBtn.onclick = () => { episodesSection.classList.remove('hidden'); episodesSection.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+        downloadBtn.onclick = () => alert('Please select a specific episode to download from the episode list below.');
+      } else {
         playBtn.onclick = () => player.startQualitySelect(id, movie.title || 'Movie', null, posterUrl);
         downloadBtn.onclick = async () => {
           ui.showToast('Fetching sources...');
@@ -5207,11 +5552,6 @@
           if (!list.length) { alert('No download sources'); return; }
           ui.showQualitySelector(list, movie.title || 'Movie', false);
         };
-      } else {
-        document.getElementById('playBtnText').innerText = 'View Episodes'; 
-        episodesSection.classList.add('hidden'); 
-        playBtn.onclick = () => { episodesSection.classList.remove('hidden'); episodesSection.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
-        downloadBtn.onclick = () => alert('Please select a specific episode to download from the episode list below.');
       }
 
       const castContainer = document.getElementById('castScroller');
@@ -5553,9 +5893,8 @@
       const items = data.results.items.filter(i => String(i.subjectId) !== String(parentId)).slice(0, 8).map(item => ({ ...item, rating: (Math.random() * (9.5 - 6.5) + 6.5).toFixed(1) }));
       items.forEach(item => {
         const contentType = detectContentType(item);
-        const isSeries = contentType === 'series';
+        const isSeries = (contentType === 'series' || contentType === 'short-series');
         const isMusic = contentType === 'music';
-        const isShort = contentType === 'short';
         const card = document.createElement('div');
         card.className = `movie-card ${isMusic ? 'music-card' : ''}`;
         card.onclick = () => router.navigate(`detail/${item.subjectId}`);
@@ -5565,7 +5904,6 @@
         let badgeText = 'MOVIE';
         if (isSeries) badgeText = 'SERIES';
         if (isMusic) badgeText = 'MUSIC';
-        if (isShort) badgeText = 'SHORT';
         
         const badge = document.createElement('span');
         badge.className = isSeries ? 'card-type-badge' : 'movie-identifier-badge-type';
@@ -5598,9 +5936,8 @@
         const info = await fetchData('/info/' + encodeURIComponent(id));
         const subj = info?.results?.subject || info?.results || null;
         const contentType = detectContentType(subj);
-        const isSeries = contentType === 'series';
+        const isSeries = (contentType === 'series' || contentType === 'short-series');
         const isMusic = contentType === 'music';
-        const isShort = contentType === 'short';
         const rating = (Math.random() * (9.5 - 6.5) + 6.5).toFixed(1);
         const card = document.createElement('div');
         card.className = `movie-card ${isMusic ? 'music-card' : ''}`;
@@ -5611,7 +5948,6 @@
         let badgeText = 'MOVIE';
         if (isSeries) badgeText = 'SERIES';
         if (isMusic) badgeText = 'MUSIC';
-        if (isShort) badgeText = 'SHORT';
         
         const badge = document.createElement('span');
         badge.className = isSeries ? 'card-type-badge' : 'movie-identifier-badge-type';
@@ -5896,7 +6232,7 @@
         const info = await fetchData('/info/' + item.subjectId);
         const subject = info?.results?.subject ?? item;
         const contentType = detectContentType(subject);
-        const isSeries = contentType === 'series';
+        const isSeries = (contentType === 'series' || contentType === 'short-series');
         state.heroMovie = subject;
         ui.renderHero(subject, item.subjectId, isSeries); 
       } else {
@@ -5914,12 +6250,24 @@
       if (!data) { ui.showDetailError('Failed to load'); return; }
       const { subject, stars, resource } = data.results || data;
       if (!subject) { ui.showDetailError('No data'); return; }
-      const contentType = detectContentType(subject);
-      const isSeries = contentType === 'series';
+      let contentType = detectContentType(subject);
+      const isSeries = (contentType === 'series' || contentType === 'short-series');
       const posterUrl = subject.cover?.url || subject.thumbnail || '';
-      state.currentSeriesDetails = isSeries ? { id: id, seasons: resource?.seasons || [], baseTitle: subject.title || subject.name || 'Untitled', posterUrl: posterUrl } : null;
+      
+      let seasonsData = resource?.seasons || [];
+      if (seasonsData.length === 0 && (contentType === 'short-series' || subject.subjectType === 7 || (resource.episodeCount > 0) || (resource.totalEpisodes > 0))) {
+        let totalEpisodes = resource.episodeCount || resource.totalEpisodes || 1;
+        seasonsData = [{
+          se: 1,
+          maxEp: totalEpisodes,
+          count: totalEpisodes,
+          episodes: Array.from({ length: totalEpisodes }, (_, i) => i + 1)
+        }];
+      }
+      
+      state.currentSeriesDetails = isSeries ? { id: id, seasons: seasonsData, baseTitle: subject.title || subject.name || 'Untitled', posterUrl: posterUrl } : null;
       ui.renderDetail(subject, stars || [], resource || null, id, isSeries, posterUrl, contentType); 
-      if (isSeries) { ui.bindSeasons(resource?.seasons || []); } else { document.getElementById('episodesSection').classList.add('hidden'); }
+      if (isSeries || isSeries) { ui.bindSeasons(seasonsData); } else { document.getElementById('episodesSection').classList.add('hidden'); }
       ui.renderRelated(subject, id);
       ui.updateLibraryButton(id);
     },
@@ -5996,7 +6344,7 @@
     if (video) {
       video.addEventListener('fullscreenchange', () => {
           if (document.fullscreenElement || document.webkitFullscreenElement) {
-              try { if (screen.orientation && screen.orientation.lock) { screen.orientation.lock('landscape').catch(e => console.log('Orientation lock failed:', e)); } } catch (e) { console.warn("Screen orientation API not supported or lock failed.", e); }
+              try { if (screen.orientation && screen.orientation.lock) { screen.orientation.lock('portrait').catch(e => console.log('Orientation lock failed:', e)); } } catch (e) { console.warn("Screen orientation API not supported or lock failed.", e); }
           } else {
               try { if (screen.orientation && screen.orientation.unlock) { screen.orientation.unlock(); } } catch (e) { }
           }
