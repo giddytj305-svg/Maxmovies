@@ -1361,6 +1361,12 @@
   .player-info-section { padding: 20px var(--padding-sides); display: flex; gap: 30px; background: var(--bg-color); border-bottom: 1px solid var(--glassy-border); }
   #player-extra-info { padding: 0 var(--padding-sides) 20px var(--padding-sides); background: var(--bg-color); width: 100%; max-width: 1600px; }
   
+  .player-episodes-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--glassy-border);
+  }
+  
   .player-quality-picker {
     background: var(--glassy-bg);
     backdrop-filter: blur(10px);
@@ -4628,13 +4634,31 @@
              episodeInfoContainer.innerHTML = '';
         }
 
+        // Quality Picker Section
         player.renderQualityPicker(state.playerSources);
-        if (isSeries) {
+        
+        // Episodes Section (only for series)
+        if (isSeries && Array.isArray(seasons) && seasons.length > 0) {
+            const episodesSection = document.createElement('div');
+            episodesSection.className = 'player-episodes-section';
+            episodesSection.style.marginTop = '20px';
+            
+            const episodesTitle = document.createElement('div');
+            episodesTitle.style.fontSize = '1rem';
+            episodesTitle.style.fontWeight = '700';
+            episodesTitle.style.marginBottom = '15px';
+            episodesTitle.style.color = 'white';
+            episodesTitle.innerText = 'Episodes';
+            episodesSection.appendChild(episodesTitle);
+            
+            extraInfoContainer.appendChild(episodesSection);
             ui.renderPlayerEpisodes(seasons, currentEpisode); 
         }
         
+        // Developer Card Section (at the bottom)
         const devMsg = document.createElement('div');
         devMsg.className = 'dev-message-card enhanced-dev-card';
+        devMsg.style.marginTop = '30px';
         devMsg.innerHTML = `
             <div class="dev-header">
                 <div class="dev-icon-glow">
@@ -5811,9 +5835,12 @@
     
     renderPlayerEpisodes(seasons, currentEpisode) {
         const container = document.getElementById('player-extra-info');
+        const episodesSection = container.querySelector('.player-episodes-section');
+        
+        if (!episodesSection) return;
         
         if (!Array.isArray(seasons) || seasons.length === 0) {
-            container.innerHTML += '<div style="padding: 20px 0"><p style="color:#777">No season or episode data available.</p></div>';
+            episodesSection.innerHTML += '<div style="padding: 20px 0"><p style="color:#777">No season or episode data available.</p></div>';
             return;
         }
 
@@ -5867,10 +5894,10 @@
             content.appendChild(grid);
             collapsibleWrapper.appendChild(header);
             collapsibleWrapper.appendChild(content);
-            container.appendChild(collapsibleWrapper);
+            episodesSection.appendChild(collapsibleWrapper);
         });
         if (currentEpisode) {
-            const activeHeader = document.querySelector(`#player-extra-info .collapsible-header.open`);
+            const activeHeader = document.querySelector(`.player-episodes-section .collapsible-header.open`);
             if (activeHeader) {
                 const id = activeHeader.nextElementSibling.id;
                 document.getElementById(id).classList.add('open');
